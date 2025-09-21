@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEDI-HACK - Agenda del Doctor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="CSS/cita_doc.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 sidebar">
+        <div class="logo-section text-center py-4">
+          <h2 class="text-white">MEDI-HACK</h2>
+          <p class="text-light">Panel del Doctor</p>
+        </div>
+        <div class="menu-options">
+          <h5 class="section-title">Opciones</h5>
+          <div class="nav flex-column nav-pills">
+            <a class="nav-link active"><i class="fas fa-calendar-alt me-2"></i> Mi Agenda</a>
+            <a class="nav-link"><i class="fas fa-user-clock me-2"></i> Solicitudes</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9 main-content">
+        <div class="header-bar p-3">
+          <h4 class="mb-0">Agenda de Citas</h4>
+        </div>
+
+        <div class="content-area p-4">
+          <div class="row">
+            <!-- Calendario -->
+            <div class="col-md-6">
+              <h5 class="section-title">Definir Disponibilidad</h5>
+              <div class="calendar-container">
+                <div class="calendar" id="calendar">
+                  <div class="calendar-header">
+                    <button class="btn btn-sm btn-outline-secondary" id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                    <h6 id="current-month">Mes Año</h6>
+                    <button class="btn btn-sm btn-outline-secondary" id="next-month"><i class="fas fa-chevron-right"></i></button>
+                  </div>
+                  <div class="calendar-grid" id="calendar-days"></div>
+                </div>
+                <div class="mt-3">
+                  <label class="form-label">Horario disponible</label>
+                  <select id="hora-disponible" class="form-select">
+                    <option>08:00 AM</option>
+                    <option>09:00 AM</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>02:00 PM</option>
+                    <option>03:00 PM</option>
+                  </select>
+                  <button class="btn btn-primary mt-2" id="guardar-disponibilidad">
+                    <i class="fas fa-save me-1"></i> Guardar Disponibilidad
+                  </button>
+                </div>
+                <ul id="horasLista" class="list-group mt-3"></ul>
+              </div>
+            </div>
+
+            <!-- Solicitudes -->
+            <div class="col-md-6">
+              <h5 class="section-title">Solicitudes de Pacientes</h5>
+              <div class="appointments-table">
+                <table class="table table-striped" id="tabla-solicitudes">
+                  <thead>
+                    <tr>
+                      <th>Paciente</th>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      let currentDate = new Date();
+      let selectedDays = JSON.parse(localStorage.getItem("doctorDisponibilidad")) || {};
+      let selectedDate = null;
+
+      const calendarDays = document.getElementById("calendar-days");
+      const currentMonthElement = document.getElementById("current-month");
+      const tablaSolicitudes = document.querySelector("#tabla-solicitudes tbody");
+
+      function generateCalendar(date){
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+        calendarDays.innerHTML = "";
+
+        ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"].forEach(d=>{
+          let div=document.createElement("div");
+          div.classList.add("calendar-day","header");
+          div.textContent=d;
+          calendarDays.appendChild(div);
+        });
+
+        const firstDay = new Date(year,month,1).getDay();
+        const daysInMonth = new Date(year,month+1,0).getDate();
+
+        for(let i=0;i<firstDay;i++){
+          let empty=document.createElement("div");
+          empty.classList.add("calendar-day","other-month");
+          calendarDays.appendChild(empty);
+        }
+
+        for(let d=1; d<=daysInMonth; d++){
+          let dateKey=new Date(year,month,d).toISOString().split("T")[0];
+          let div=document.createElement("div");
+          div.classList.add("calendar-day");
+          div.textContent=d;
+
+          if(selectedDays[dateKey] && selectedDays[dateKey].length>0){
+            div.classList.add("available");
+          }
+          div.addEventListener("click",()=>{
+            document.querySelectorAll(".calendar-day.selected").forEach(el=>el.classList.remove("selected"));
+            div.classList.add("selected");
+            selectedDate=dateKey;
+            mostrarHorasDisponibles();
+          });
+
+          calendarDays.appendChild(div);
+        }
+      }
+
+      function mostrarHorasDisponibles(){
+        let lista=document.getElementById("horasLista");
+        lista.innerHTML="";
+        if(!selectedDate) return;
+        let horas=selectedDays[selectedDate]||[];
+        horas.forEach(h=>{
+          let li=document.createElement("li");
+          li.textContent=h;
+          li.classList.add("list-group-item","d-flex","justify-content-between","align-items-center");
+          let btn=document.createElement("button");
+          btn.textContent="Quitar";
+          btn.classList.add("btn","btn-sm","btn-danger");
+          btn.addEventListener("click",()=>{
+            selectedDays[selectedDate]=selectedDays[selectedDate].filter(x=>x!==h);
+            if(selectedDays[selectedDate].length===0) delete selectedDays[selectedDate];
+            localStorage.setItem("doctorDisponibilidad",JSON.stringify(selectedDays));
+            mostrarHorasDisponibles();
+            generateCalendar(currentDate);
+          });
+          li.appendChild(btn);
+          lista.appendChild(li);
+        });
+      }
+
+      document.getElementById("guardar-disponibilidad").addEventListener("click",()=>{
+        if(!selectedDate){alert("Seleccione un día en el calendario");return;}
+        let hora=document.getElementById("hora-disponible").value;
+        if(!selectedDays[selectedDate]) selectedDays[selectedDate]=[];
+        if(!selectedDays[selectedDate].includes(hora)){
+          selectedDays[selectedDate].push(hora);
+          localStorage.setItem("doctorDisponibilidad",JSON.stringify(selectedDays));
+        }
+        mostrarHorasDisponibles();
+        generateCalendar(currentDate);
+      });
+
+      // navegación
+      document.getElementById("prev-month").addEventListener("click",()=>{
+        currentDate.setMonth(currentDate.getMonth()-1);
+        generateCalendar(currentDate);
+      });
+      document.getElementById("next-month").addEventListener("click",()=>{
+        currentDate.setMonth(currentDate.getMonth()+1);
+        generateCalendar(currentDate);
+      });
+
+      // cargar solicitudes
+      function cargarSolicitudes(){
+        let citas=JSON.parse(localStorage.getItem("citasPacientes"))||[];
+        tablaSolicitudes.innerHTML="";
+        citas.forEach((c,idx)=>{
+          let tr=document.createElement("tr");
+          tr.innerHTML=`
+            <td>${c.paciente}</td>
+            <td>${c.fecha}</td>
+            <td>${c.hora}</td>
+            <td><span class="badge ${c.estado==="Confirmada"?"bg-success":(c.estado==="Rechazada"?"bg-danger":"bg-warning")}">${c.estado}</span></td>
+            <td>
+              <button class="btn btn-sm btn-success confirmar">✔</button>
+              <button class="btn btn-sm btn-danger rechazar">✖</button>
+            </td>`;
+          tablaSolicitudes.appendChild(tr);
+
+          tr.querySelector(".confirmar").addEventListener("click",()=>{
+            citas[idx].estado="Confirmada";
+            localStorage.setItem("citasPacientes",JSON.stringify(citas));
+            cargarSolicitudes();
+          });
+          tr.querySelector(".rechazar").addEventListener("click",()=>{
+            citas[idx].estado="Rechazada";
+            // devolver hora a disponibilidad
+            if(!selectedDays[citas[idx].fecha]) selectedDays[citas[idx].fecha]=[];
+            if(!selectedDays[citas[idx].fecha].includes(citas[idx].hora)){
+              selectedDays[citas[idx].fecha].push(citas[idx].hora);
+            }
+            localStorage.setItem("doctorDisponibilidad",JSON.stringify(selectedDays));
+            localStorage.setItem("citasPacientes",JSON.stringify(citas));
+            cargarSolicitudes();
+            generateCalendar(currentDate);
+          });
+        });
+      }
+
+      generateCalendar(currentDate);
+      cargarSolicitudes();
+    });
+  </script>
+</body>
+</html>

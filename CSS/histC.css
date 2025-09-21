@@ -1,0 +1,163 @@
+:root {
+    --primary: #2c6bac;
+    --secondary: #4ca1af;
+    --accent: #38b6ff;
+    --bg-light: #f4f7fb;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--primary);
+    padding: 0.8rem 1.2rem;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+    margin-left: 1rem;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--accent) !important;
+}
+
+/* Card principal */
+.patient-info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border-top: 5px solid var(--primary);
+}
+
+/* Títulos de sección */
+.section-title {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+}
+
+/* Formularios */
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dce1e7;
+    transition: all 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 5px rgba(76, 161, 175, 0.3);
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-danger {
+    border-radius: 8px;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--primary);
+    color: white;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer h5 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.footer a {
+    color: white;
+    margin: 0 8px;
+    transition: 0.3s;
+}
+
+.footer a:hover {
+    color: var(--accent);
+}
+
+/* Modales */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    background-color: var(--secondary);
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .patient-info-card {
+        padding: 1rem;
+    }
+}

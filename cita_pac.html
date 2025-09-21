@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDI-HACK - Cita Electrónica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/cita_pac.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <div class="logo-section text-center py-4">
+                    <h2 class="text-white">MEDI-HACK</h2>
+                    <p class="text-light">Sistema de Gestión Médica</p>
+                </div>
+                
+                <div class="patient-info p-3">
+                    <h5 class="section-title">Información del Paciente</h5>
+                    <div class="patient-details">
+                        <p><strong>Nombre:</strong> NIREGA DEL CARMEN BALMACEDA LÓPEZ</p>
+                        <p><strong>EXP Electrónico Único:</strong> 40001CB1F20098301</p>
+                        <p><strong>Identificación:</strong> 406-200983-000011</p>
+                        <p><strong>Edad:</strong> 41 años</p>
+                        <p><strong>Sexo:</strong> F</p>
+                        <p><strong>Celular:</strong> 58216874</p>
+                    </div>
+                </div>
+                
+                <div class="menu-options">
+                    <h5 class="section-title">Opciones</h5>
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-search me-2"></i> Buscar y Seleccionar
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-check-circle me-2"></i> Verificar Paciente
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-file-medical me-2"></i> Procedencia
+                        </a>
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-calendar-plus me-2"></i> Crear Cita
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content">
+                <div class="header-bar p-3">
+                    <h4 class="mb-0">Cita Electrónica</h4>
+                </div>
+
+                <div class="content-area p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="section-title">Especialidades Médicas</h5>
+                            <div class="specialties-list">
+                                <div class="specialty-item active">GINECO OBSTETRICIA</div>
+                                <div class="specialty-item">ALERGOLOGIA</div>
+                                <div class="specialty-item">ANGIOLOGIA</div>
+                                <div class="specialty-item">CIRUGIA GENERAL</div>
+                                <div class="specialty-item">DERMATOLOGIA</div>
+                                <div class="specialty-item">ENDOCRINOLOGIA</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="appointment-form">
+                                <h5 class="section-title">Agendar Cita</h5>
+                                
+                                <div class="form-section mb-3">
+                                    <label class="form-label">Consultorio</label>
+                                    <select class="form-select" id="consultorio">
+                                        <option selected>Seleccionar consultorio</option>
+                                        <option>Consultorio Dra. Ruiz</option>
+                                        <option>Consultorio 2</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-section mb-3">
+                                    <label class="form-label">Médico</label>
+                                    <select class="form-select" id="medico">
+                                        <option selected>Seleccionar médico</option>
+                                        <option>Dra. Halima Esmeralda Ruiz</option>
+                                        <option>Dr. Juan Pérez</option>
+                                    </select>
+                                </div>
+
+                                <div class="calendar-container">
+                                    <h6 class="mb-3">Fechas Disponibles</h6>
+                                    <div class="calendar" id="calendar">
+                                        <div class="calendar-header">
+                                            <div class="btn btn-sm btn-outline-secondary" id="prev-month">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </div>
+                                            <h6 id="current-month">Mes Año</h6>
+                                            <div class="btn btn-sm btn-outline-secondary" id="next-month">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </div>
+                                        </div>
+                                        <div class="calendar-grid" id="calendar-days"></div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section mb-3">
+                                    <label class="form-label">Hora</label>
+                                    <select class="form-select" id="hora">
+                                        <option selected>Seleccionar hora</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-section mb-3">
+                                    <label class="form-label">Motivo de consulta</label>
+                                    <textarea class="form-control" id="motivo" rows="3" placeholder="Describa el motivo de su consulta"></textarea>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary" id="agendarBtn">
+                                        <i class="fas fa-calendar-check me-1"></i> Agendar Cita
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="section-title">Citas Programadas</h5>
+                            <div class="appointments-table">
+                                <table class="table table-striped" id="tabla-citas">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th>Médico</th>
+                                            <th>Especialidad</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentDate = new Date();
+            let selectedDate = null;
+            const calendarDays = document.getElementById('calendar-days');
+            const currentMonthElement = document.getElementById('current-month');
+            const prevMonthButton = document.getElementById('prev-month');
+            const nextMonthButton = document.getElementById('next-month');
+            const horaSelect = document.getElementById('hora');
+            const citasTable = document.querySelector('#tabla-citas tbody');
+
+            let doctorDisponibilidad = JSON.parse(localStorage.getItem("doctorDisponibilidad")) || {};
+
+            // generar calendario solo con días disponibles
+            function generateCalendar(date) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+                currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+                calendarDays.innerHTML = '';
+
+                const dayNames = ["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+                dayNames.forEach(d => {
+                    const div = document.createElement('div');
+                    div.classList.add('calendar-day','header');
+                    div.textContent = d;
+                    calendarDays.appendChild(div);
+                });
+
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month+1, 0).getDate();
+                for (let i=0; i<firstDay; i++){
+                    let empty=document.createElement('div');
+                    empty.classList.add('calendar-day','other-month');
+                    calendarDays.appendChild(empty);
+                }
+
+                for (let d=1; d<=daysInMonth; d++){
+                    let dateKey = new Date(year,month,d).toISOString().split("T")[0];
+                    let div=document.createElement('div');
+                    div.classList.add('calendar-day');
+                    div.textContent = d;
+
+                    if(doctorDisponibilidad[dateKey]){
+                        div.classList.add('available');
+                        div.addEventListener("click",()=>{
+                            selectDate(dateKey,div);
+                        });
+                    } else {
+                        div.classList.add('unavailable');
+                    }
+                    calendarDays.appendChild(div);
+                }
+            }
+
+            function selectDate(dateKey, element){
+                document.querySelectorAll('.calendar-day.selected').forEach(el=>el.classList.remove('selected'));
+                element.classList.add('selected');
+                selectedDate = dateKey;
+
+                // cargar horas disponibles
+                horaSelect.innerHTML = "";
+                doctorDisponibilidad[dateKey].forEach(h=>{
+                    let opt=document.createElement("option");
+                    opt.textContent=h;
+                    horaSelect.appendChild(opt);
+                });
+            }
+
+            prevMonthButton.addEventListener("click",()=>{
+                currentDate.setMonth(currentDate.getMonth()-1);
+                generateCalendar(currentDate);
+            });
+            nextMonthButton.addEventListener("click",()=>{
+                currentDate.setMonth(currentDate.getMonth()+1);
+                generateCalendar(currentDate);
+            });
+
+            // agendar cita
+            document.getElementById("agendarBtn").addEventListener("click",()=>{
+                if(!selectedDate){
+                    alert("Seleccione una fecha disponible");
+                    return;
+                }
+                let hora=horaSelect.value;
+                if(!hora || hora==="Seleccionar hora"){
+                    alert("Seleccione una hora");
+                    return;
+                }
+                let medico=document.getElementById("medico").value;
+                let especialidad=document.querySelector(".specialty-item.active").textContent;
+                let paciente="NIREGA DEL CARMEN BALMACEDA LÓPEZ";
+                let motivo=document.getElementById("motivo").value;
+
+                let nuevaCita={
+                    paciente, fecha:selectedDate, hora, medico, especialidad, motivo, estado:"Pendiente"
+                };
+
+                let citas=JSON.parse(localStorage.getItem("citasPacientes"))||[];
+                citas.push(nuevaCita);
+                localStorage.setItem("citasPacientes", JSON.stringify(citas));
+
+                cargarCitas();
+                alert("Cita agendada con éxito.");
+            });
+
+            function cargarCitas(){
+                citasTable.innerHTML="";
+                let citas=JSON.parse(localStorage.getItem("citasPacientes"))||[];
+                citas.forEach(c=>{
+                    let tr=document.createElement("tr");
+                    tr.innerHTML=`<td>${c.fecha}</td><td>${c.hora}</td><td>${c.medico}</td><td>${c.especialidad}</td><td><span class="badge bg-warning">${c.estado}</span></td>`;
+                    citasTable.appendChild(tr);
+                });
+            }
+
+            generateCalendar(currentDate);
+            cargarCitas();
+        });
+    </script>
+</body>
+</html>

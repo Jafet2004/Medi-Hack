@@ -1,0 +1,26 @@
+@import url('cita_pac.css');
+
+.section-title {
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-day.available {
+  background-color: #e8f5e9 !important;
+  border: 2px solid #2c6bac;
+}
+
+.confirmar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+.rechazar {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+.confirmar:hover, .rechazar:hover {
+  opacity: 0.9;
+}
