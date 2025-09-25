@@ -40,21 +40,21 @@
         </div>
     </nav>
 
-    <!-- Patient Header -->
-    <section class="patient-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-2 text-center">
-                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&size=120&background=random" class="rounded-circle mb-3" alt="Patient Photo">
-                </div>
-                <div class="col-md-10">
-                    <h1 class="display-5 fw-bold">Expediente Clínico</h1>
-                    <h2 class="h3">Juan Carlos Pérez González</h2>
-                    <p class="mb-0">ID: PAC-2023-0015 | Cédula: 1-2345-6789 | Edad: 42 años</p>
-                </div>
+<!-- Patient Header -->
+<section class="patient-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <img id="patient-photo" src="https://ui-avatars.com/api/?name=Usuario&size=120&background=random" class="rounded-circle mb-3" alt="Patient Photo">
+            </div>
+            <div class="col-md-10">
+                <h1 class="display-5 fw-bold">Expediente Clínico</h1>
+                <h2 id="patient-fullname" class="h3">Cargando información...</h2>
+                <p id="patient-info" class="mb-0">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Main Content -->
     <div class="container">
@@ -445,31 +445,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Simulación de autenticación y estado del historial clínico
-        // En una implementación real, esto vendría del backend
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simular diferentes estados para probar la interfaz
-            const estadoUsuario = 'autenticado_sin_historial'; // Cambiar a: 'no_autenticado', 'autenticado_sin_historial', 'autenticado_con_historial'
-            
-            const noAutenticado = document.getElementById('historia-no-autenticado');
-            const crearHistoria = document.getElementById('historia-crear');
-            const verHistoria = document.getElementById('historia-ver');
-            
-            // Ocultar todos primero
-            noAutenticado.style.display = 'none';
-            crearHistoria.style.display = 'none';
-            verHistoria.style.display = 'none';
-            
-            // Mostrar el estado correspondiente
-            if (estadoUsuario === 'no_autenticado') {
-                noAutenticado.style.display = 'block';
-            } else if (estadoUsuario === 'autenticado_sin_historial') {
-                crearHistoria.style.display = 'block';
-            } else if (estadoUsuario === 'autenticado_con_historial') {
-                verHistoria.style.display = 'block';
-            }
-        });
-    </script>
+    <script src="JavaScript/index_pac.js"></script>
+    <script src="backend/server.js"></script>
 </body>
 </html>

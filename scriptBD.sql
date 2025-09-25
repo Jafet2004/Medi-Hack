@@ -24,6 +24,7 @@ CREATE TABLE usuarios (
 -- =========================
 CREATE TABLE pacientes (
     id_paciente INT PRIMARY KEY, -- mismo id que usuario
+    cod_pac VARCHAR(16) UNIQUE,
     fecha_nacimiento DATE NOT NULL,
     celular VARCHAR(15),
     direccion VARCHAR(255),
@@ -71,3 +72,77 @@ CREATE TABLE administradores (
     rol VARCHAR(50) DEFAULT 'Administrador',
     CONSTRAINT fk_admin_usuario FOREIGN KEY (id_admin) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 );
+
+-- =========================
+-- Tabla Historial Clínico
+-- =========================
+CREATE TABLE historial_clinico (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tipo_sangre ENUM('A+','A-','B+','B-','AB+','AB-','O+','O-'),
+    estado_civil ENUM('Soltero','Casado','Divorciado','Viudo','Union Libre','Otro'),
+    ocupacion VARCHAR(100),
+    antecedentes_familiares TEXT,
+    tabaquismo ENUM('nunca','exfumador','fumador'),
+    alcohol ENUM('nunca','ocasional','moderado','frecuente'),
+    actividad_fisica ENUM('sedentario','leve','moderado','intenso'),
+    dieta ENUM('balanceada','vegetariana','vegana','altaEnGrasas','otra'),
+    informacion_adicional TEXT,
+    CONSTRAINT fk_historial_paciente FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente) ON DELETE CASCADE
+);
+
+-- =========================
+-- Tabla Enfermedades Crónicas
+-- =========================
+CREATE TABLE historial_enfermedades_cronicas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_historial INT NOT NULL,
+    enfermedad VARCHAR(100) NOT NULL,
+    CONSTRAINT fk_ec_historial FOREIGN KEY (id_historial) REFERENCES historial_clinico(id_historial) ON DELETE CASCADE
+);
+
+-- =========================
+-- Tabla Alergias
+-- =========================
+CREATE TABLE historial_alergias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_historial INT NOT NULL,
+    alergia VARCHAR(100) NOT NULL,
+    CONSTRAINT fk_al_historial FOREIGN KEY (id_historial) REFERENCES historial_clinico(id_historial) ON DELETE CASCADE
+);
+
+-- =========================
+-- Tabla Cirugías Previas
+-- =========================
+CREATE TABLE historial_cirugias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_historial INT NOT NULL,
+    tipo_cirugia VARCHAR(255) NOT NULL,
+    fecha_cirugia DATE,
+    CONSTRAINT fk_cirugia_historial FOREIGN KEY (id_historial) REFERENCES historial_clinico(id_historial) ON DELETE CASCADE
+);
+
+-- =========================
+-- Tabla Hospitalizaciones Previas
+-- =========================
+CREATE TABLE historial_hospitalizaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_historial INT NOT NULL,
+    motivo VARCHAR(255) NOT NULL,
+    fecha DATE,
+    CONSTRAINT fk_hospital_historial FOREIGN KEY (id_historial) REFERENCES historial_clinico(id_historial) ON DELETE CASCADE
+);
+
+-- =========================
+-- Tabla Medicamentos Actuales
+-- =========================
+CREATE TABLE historial_medicamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_historial INT NOT NULL,
+    nombre_medicamento VARCHAR(255) NOT NULL,
+    dosis VARCHAR(50),
+    frecuencia VARCHAR(50),
+    CONSTRAINT fk_medic_historial FOREIGN KEY (id_historial) REFERENCES historial_clinico(id_historial) ON DELETE CASCADE
+);
+

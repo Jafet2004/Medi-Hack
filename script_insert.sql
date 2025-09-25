@@ -6,8 +6,9 @@ VALUES
 ('trabajador', 'Juan', 'Carlos', 'Ruiz', 'Martinez', '002-654321-0000X', 'juanruiz@example.com', 'JcR24876'),
 ('administracion', 'Pedro', NULL, 'Gomez', 'Ramos', '003-112233-0000X', 'pedrog@example.com', 'PR003477');
 
-INSERT INTO pacientes (id_paciente, fecha_nacimiento, celular, direccion, genero, ocupacion, estado_civil)
-VALUES (1, '1985-04-10', '88888888', 'Managua, Nicaragua', 'F', 'Ingeniera', 'Casado');
+INSERT INTO pacientes (id_paciente, fecha_nacimiento, celular, direccion, genero, ocupacion, estado_civil, cod_pac)
+VALUES (1, '1985-04-10', '88888888', 'Managua, Nicaragua', 'F', 'Ingeniera', 'Casado', 'PAC-2025-0001');
+
 
 INSERT INTO trabajadores_salud (id_trabajador, codigo_minsa)
 VALUES (2, 'MINSA-12345');
