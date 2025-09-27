@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="CSS/ind.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -22,7 +24,8 @@
                         <a class="nav-link active" href="index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">Servicios</a>
+                        <a class="nav-link" href="#" data-bs-toggle="modal"
+                            data-bs-target="#servicesModal">Servicios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">Acerca de</a>
@@ -32,7 +35,7 @@
                     </li>
                     <li class="nav-item ms-2">
                         <a href="login.html" class="btn btn-outline-light">
-                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                            <i class="fas fa-sign-in-alt me-1"></i> Cerrar Sesión
                         </a>
                     </li>
                 </ul>
@@ -40,21 +43,19 @@
         </div>
     </nav>
 
-<!-- Patient Header -->
-<section class="patient-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-2 text-center">
-                <img id="patient-photo" src="https://ui-avatars.com/api/?name=Usuario&size=120&background=random" class="rounded-circle mb-3" alt="Patient Photo">
-            </div>
-            <div class="col-md-10">
-                <h1 class="display-5 fw-bold">Expediente Clínico</h1>
-                <h2 id="patient-fullname" class="h3">Cargando información...</h2>
-                <p id="patient-info" class="mb-0">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
+    <!-- Patient Header -->
+    <section class="patient-header">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-md-10">
+                    <h1 class="display-5 fw-bold">Expediente Clínico</h1>
+                    <h2 id="patient-fullname" class="h3">Cargando información...</h2>
+                    <p id="patient-info" class="mb-0">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Main Content -->
     <div class="container">
@@ -64,7 +65,8 @@
                 <div class="quick-access sticky-top" style="top: 20px;">
                     <h5 class="section-title">Módulos del Sistema</h5>
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                        <a class="nav-link active" id="identificacion-tab" data-bs-toggle="pill" href="#identificacion" role="tab">
+                        <a class="nav-link active" id="identificacion-tab" data-bs-toggle="pill" href="#identificacion"
+                            role="tab">
                             <i class="fas fa-id-card me-2"></i> Datos de Identificación
                         </a>
                         <a class="nav-link" id="historia-tab" data-bs-toggle="pill" href="#historia" role="tab">
@@ -129,25 +131,25 @@
                                 <h4 class="card-title section-title">Datos de Identificación</h4>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p><strong>Nombre completo:</strong> Juan Carlos Pérez González</p>
-                                        <p><strong>Cédula:</strong> 1-2345-6789</p>
-                                        <p><strong>Fecha de nacimiento:</strong> 15/03/1981</p>
-                                        <p><strong>Edad:</strong> 42 años</p>
-                                        <p><strong>Género:</strong> Masculino</p>
+                                        <p><strong>Nombre completo:</strong> <span
+                                                id="patient-fullname-ident">Cargando...</span></p>
+                                        <p><strong>Cédula:</strong> <span id="patient-cedula">Cargando...</span></p>
+                                        <p><strong>Fecha de nacimiento:</strong> <span
+                                                id="patient-fecha-nacimiento">Cargando...</span></p>
+                                        <p><strong>Edad:</strong> <span id="patient-edad">Cargando...</span></p>
+                                        <p><strong>Género:</strong> <span id="patient-genero">Cargando...</span></p>
                                     </div>
                                     <div class="col-md-6">
-                                        <p><strong>Teléfono:</strong> 8888-8888</p>
-                                        <p><strong>Correo electrónico:</strong> juan.perez@example.com</p>
-                                        <p><strong>Dirección:</strong> San José, Costa Rica</p>
-                                        <p><strong>Ocupación:</strong> Ingeniero</p>
-                                        <p><strong>Estado civil:</strong> Casado</p>
+                                        <p><strong>Teléfono:</strong> <span id="patient-telefono">Cargando...</span></p>
+                                        <p><strong>Correo electrónico:</strong> <span
+                                                id="patient-email">Cargando...</span></p>
+                                        <p><strong>Dirección:</strong> <span id="patient-direccion">Cargando...</span>
+                                        </p>
+                                        <p><strong>Ocupación:</strong> <span id="patient-ocupacion">Cargando...</span>
+                                        </p>
+                                        <p><strong>Estado civil:</strong> <span
+                                                id="patient-estado-civil">Cargando...</span></p>
                                     </div>
-                                </div>
-                                <div class="mt-3">
-                                    <h5 class="section-title">Contacto de Emergencia</h5>
-                                    <p><strong>Nombre:</strong> María González</p>
-                                    <p><strong>Parentesco:</strong> Esposa</p>
-                                    <p><strong>Teléfono:</strong> 8888-9999</p>
                                 </div>
                             </div>
                         </div>
@@ -158,32 +160,35 @@
                         <div class="card patient-info-card">
                             <div class="card-body">
                                 <h4 class="card-title section-title">Historia Clínica</h4>
-                                
+
                                 <!-- Estado de autenticación -->
                                 <div id="historia-no-autenticado" style="display: none;">
                                     <div class="alert alert-info">
-                                        <i class="fas fa-info-circle me-2"></i>Para acceder a tu historia clínica, debes iniciar sesión primero.
+                                        <i class="fas fa-info-circle me-2"></i>Para acceder a tu historia clínica, debes
+                                        iniciar sesión primero.
                                     </div>
                                     <div class="d-grid gap-2">
                                         <a href="login.html" class="btn btn-primary">Iniciar Sesión</a>
                                         <a href="register.html" class="btn btn-outline-primary">Crear Cuenta</a>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Si está autenticado pero no tiene historial -->
                                 <div id="historia-crear" style="display: none;">
                                     <div class="alert alert-warning">
-                                        <i class="fas fa-exclamation-circle me-2"></i>Aún no tienes un historial clínico registrado.
+                                        <i class="fas fa-exclamation-circle me-2"></i>Aún no tienes un historial clínico
+                                        registrado.
                                     </div>
                                     <div class="text-center py-4">
                                         <i class="fas fa-file-medical fa-4x text-muted mb-3"></i>
-                                        <p class="mb-4">Para comenzar, crea tu historial clínico para llevar un registro completo de tu salud.</p>
+                                        <p class="mb-4">Para comenzar, crea tu historial clínico para llevar un registro
+                                            completo de tu salud.</p>
                                         <a href="historiaCl.html" class="btn btn-primary btn-lg">
                                             <i class="fas fa-plus me-2"></i> Crear Historial Clínico
                                         </a>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Si está autenticado y ya tiene historial -->
                                 <div id="historia-ver" style="display: none;">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -260,8 +265,10 @@
                                     <div class="card mb-3">
                                         <div class="card-body">
                                             <h6 class="card-title">Consulta de control - 15/06/2023</h6>
-                                            <p class="card-text">Paciente con presión arterial controlada con medicación actual. Se ajusta dosis de Losartán a 50mg diarios.</p>
-                                            <p class="card-text"><small class="text-muted">Dr. Roberto Méndez</small></p>
+                                            <p class="card-text">Paciente con presión arterial controlada con medicación
+                                                actual. Se ajusta dosis de Losartán a 50mg diarios.</p>
+                                            <p class="card-text"><small class="text-muted">Dr. Roberto Méndez</small>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -355,7 +362,8 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5 class="mb-4">MEDI-HACK</h5>
-                    <p>Plataforma de gestión médica diseñada para facilitar el acceso a servicios de salud y mejorar la experiencia del paciente.</p>
+                    <p>Plataforma de gestión médica diseñada para facilitar el acceso a servicios de salud y mejorar la
+                        experiencia del paciente.</p>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                     <h5 class="mb-4">Enlaces</h5>
@@ -421,7 +429,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>MEDI-HACK es un sistema de expediente clínico electrónico diseñado para mejorar la gestión de la información de salud de los pacientes, facilitando el acceso a los profesionales de la salud y optimizando los procesos médicos.</p>
+                    <p>MEDI-HACK es un portal paciente digital diseñado para mejorar la gestión de la información de
+                        salud de los pacientes, facilitando el acceso a los profesionales de la salud y optimizando los
+                        procesos médicos.</p>
                 </div>
             </div>
         </div>
@@ -435,8 +445,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Dirección:</strong> San José, Costa Rica</p>
-                    <p><strong>Teléfono:</strong> (506) 2222-2222</p>
+                    <p><strong>Dirección:</strong> Managua, Nicaragua</p>
+                    <p><strong>Teléfono:</strong> (505) 2222-2222</p>
                     <p><strong>Email:</strong> info@medi-hack.com</p>
                 </div>
             </div>
@@ -446,6 +456,6 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="JavaScript/index_pac.js"></script>
-    <script src="backend/server.js"></script>
 </body>
+
 </html>

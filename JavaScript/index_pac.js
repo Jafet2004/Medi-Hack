@@ -1,190 +1,190 @@
-// JavaScript para la página del paciente
-document.addEventListener('DOMContentLoaded', async () => {
+// index_pac.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM cargado - iniciando verificación de sesión');
+    checkSessionAndLoadPatientData();
+});
+
+// Función para verificar sesión y cargar datos del paciente
+async function checkSessionAndLoadPatientData() {
     try {
-        const response = await fetch('http://localhost:3000/paciente/me', {
+        console.log('Verificando sesión...');
+        
+        const sessionResponse = await fetch(`/check-session`, {
             credentials: 'include'
         });
         
-        if (response.status === 401) {
-            // No autenticado, redirigir a login
-            window.location.href = "login.html";
+        console.log('Respuesta de sesión:', sessionResponse.status);
+        const sessionData = await sessionResponse.json();
+        console.log('Datos de sesión:', sessionData);
+        
+        if (!sessionData.loggedIn) {
+            console.log('No hay sesión activa, redirigiendo...');
+            window.location.href = 'login.html';
             return;
         }
 
+        // Verificar que el usuario sea un paciente
+        if (sessionData.user.tipo !== 'paciente') {
+            console.log('Usuario no es paciente, redirigiendo...');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        console.log('Sesión activa, cargando datos del paciente ID:', sessionData.user.id);
+        await loadPatientData(sessionData.user.id);
+        
+    } catch (error) {
+        console.error('Error verificando sesión:', error);
+        showError('Error de conexión con el servidor');
+    }
+}
+
+// Función para cargar datos del paciente
+async function loadPatientData(userId) {
+    try {
+        console.log('Cargando datos del paciente con ID:', userId);
+        
+        const response = await fetch(`/api/paciente/${userId}`, {
+            credentials: 'include',
+            
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        console.log('Respuesta del servidor:', response.status);
+        
         if (!response.ok) {
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return;
+            }
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-
-        const data = await response.json();
-
-        if (data.success && data.paciente) {
-            const paciente = data.paciente;
-            
-            // Calcular edad a partir de la fecha de nacimiento
-            const edad = calcularEdad(paciente.fecha_nacimiento);
-            
-            // Actualizar el header del paciente
-            actualizarPatientHeader(paciente, edad);
-            
-            // Actualizar datos de identificación
-            actualizarDatosIdentificacion(paciente, edad);
-            
-            // Configurar la visibilidad de las secciones según autenticación
-            configurarVisibilidadSecciones(true);
-            
-        } else {
-            throw new Error('Datos del paciente no disponibles');
-        }
-    } catch (error) {
-        console.error("Error obteniendo datos:", error);
         
-        if (error.message.includes('401') || error.message.includes('403')) {
-            // No autorizado, redirigir a login
-            window.location.href = "login.html";
-        } else {
-            // Mostrar mensaje de error al usuario
-            mostrarError("Error al cargar los datos del paciente. Por favor, recarga la página.");
-            configurarVisibilidadSecciones(false);
-        }
+        const patientData = await response.json();
+        console.log('Datos del paciente recibidos:', patientData);
+        
+        updatePatientInterface(patientData);
+        
+    } catch (error) {
+        console.error('Error cargando datos del paciente:', error);
+        showError('Error al cargar la información del paciente: ' + error.message);
     }
-});
-
-function calcularEdad(fechaNacimiento) {
-    if (!fechaNacimiento) return 'No especificada';
-    
-    const nacimiento = new Date(fechaNacimiento);
-    const hoy = new Date();
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-    
-    const mes = hoy.getMonth() - nacimiento.getMonth();
-    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-        edad--;
-    }
-    
-    return `${edad} años`;
 }
 
-function actualizarPatientHeader(paciente, edad) {
-    // Construir nombre completo
-    const nombreCompleto = [
-        paciente.primer_nombre,
-        paciente.segundo_nombre,
-        paciente.primer_apellido,
-        paciente.segundo_apellido
-    ].filter(Boolean).join(' ');
+// Función para actualizar la interfaz con los datos del paciente
+function updatePatientInterface(patientData) {
+    console.log('Actualizando interfaz con datos:', patientData);
     
-    // Actualizar elementos del DOM
-    document.getElementById('patient-fullname').textContent = nombreCompleto || 'Nombre no disponible';
+    // Actualizar header del paciente
+    const fullName = `${patientData.primer_nombre} ${patientData.segundo_nombre || ''} ${patientData.primer_apellido} ${patientData.segundo_apellido || ''}`.trim();
+    document.getElementById('patient-fullname').textContent = fullName;
+    
+    const age = calculateAge(patientData.fecha_nacimiento);
     document.getElementById('patient-info').textContent = 
-        `ID: ${paciente.id_usuario || 'N/A'} | Cédula: ${paciente.cedula || 'N/A'} | Edad: ${edad}`;
-    
-    // Actualizar foto con las iniciales del paciente
-    const iniciales = obtenerIniciales(paciente);
-    document.getElementById('patient-photo').src = 
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(iniciales)}&size=120&background=random`;
+        `ID: ${patientData.cod_pac || 'N/A'} | Cédula: ${patientData.cedula} | Edad: ${age} años`;
+
+    // Actualizar sección de identificación
+    updateIdentificationSection(patientData);
 }
 
-function actualizarDatosIdentificacion(paciente, edad) {
-    const nombreCompleto = [
-        paciente.primer_nombre,
-        paciente.segundo_nombre,
-        paciente.primer_apellido,
-        paciente.segundo_apellido
-    ].filter(Boolean).join(' ');
+// Función para actualizar la sección de identificación
+function updateIdentificationSection(patientData) {
+    console.log('Actualizando sección de identificación');
     
-    const identificacionHTML = `
-        <div class="col-md-6">
-            <p><strong>Nombre completo:</strong> ${nombreCompleto || 'No especificado'}</p>
-            <p><strong>Cédula:</strong> ${paciente.cedula || 'No especificada'}</p>
-            <p><strong>Fecha de nacimiento:</strong> ${formatearFecha(paciente.fecha_nacimiento) || 'No especificada'}</p>
-            <p><strong>Edad:</strong> ${edad}</p>
-            <p><strong>Género:</strong> ${paciente.genero || 'No especificado'}</p>
-            <p><strong>Nacionalidad:</strong> ${paciente.nacionalidad || 'No especificada'}</p>
-        </div>
-        <div class="col-md-6">
-            <p><strong>Teléfono:</strong> ${paciente.celular || 'No especificado'}</p>
-            <p><strong>Correo electrónico:</strong> ${paciente.correo || 'No especificado'}</p>
-            <p><strong>Dirección:</strong> ${paciente.direccion || 'No especificada'}</p>
-            <p><strong>Ocupación:</strong> ${paciente.ocupacion || 'No especificada'}</p>
-            <p><strong>Estado civil:</strong> ${paciente.estado_civil || 'No especificado'}</p>
-            <p><strong>Tipo de sangre:</strong> ${paciente.tipo_sangre || 'No especificado'}</p>
-        </div>
-    `;
-    
-    const identificacionContainer = document.querySelector('#identificacion .card-body .row');
-    if (identificacionContainer) {
-        identificacionContainer.innerHTML = identificacionHTML;
+    // Columna izquierda
+    const leftColumn = document.querySelector('#identificacion .col-md-6:nth-child(1)');
+    if (leftColumn) {
+        leftColumn.innerHTML = `
+            <p><strong>Nombre completo:</strong> ${patientData.primer_nombre} ${patientData.segundo_nombre || ''} ${patientData.primer_apellido} ${patientData.segundo_apellido || ''}</p>
+            <p><strong>Cédula:</strong> ${patientData.cedula}</p>
+            <p><strong>Fecha de nacimiento:</strong> ${formatDate(patientData.fecha_nacimiento)}</p>
+            <p><strong>Edad:</strong> ${calculateAge(patientData.fecha_nacimiento)} años</p>
+            <p><strong>Género:</strong> ${patientData.genero || 'No especificado'}</p>
+        `;
     }
-    
-    // Actualizar contacto de emergencia si está disponible
-    actualizarContactoEmergencia(paciente);
-}
 
-function actualizarContactoEmergencia(paciente) {
-    const contactoEmergenciaHTML = `
-        <h5 class="section-title">Contacto de Emergencia</h5>
-        <p><strong>Nombre:</strong> ${paciente.contacto_emergencia_nombre || 'No especificado'}</p>
-        <p><strong>Parentesco:</strong> ${paciente.contacto_emergencia_parentesco || 'No especificado'}</p>
-        <p><strong>Teléfono:</strong> ${paciente.contacto_emergencia_telefono || 'No especificado'}</p>
-    `;
-    
-    const contactoContainer = document.querySelector('#identificacion .card-body .mt-3');
-    if (contactoContainer) {
-        contactoContainer.innerHTML = contactoEmergenciaHTML;
+    // Columna derecha
+    const rightColumn = document.querySelector('#identificacion .col-md-6:nth-child(2)');
+    if (rightColumn) {
+        rightColumn.innerHTML = `
+            <p><strong>Teléfono:</strong> ${patientData.celular || 'No especificado'}</p>
+            <p><strong>Correo electrónico:</strong> ${patientData.correo}</p>
+            <p><strong>Dirección:</strong> ${patientData.direccion || 'No especificada'}</p>
+            <p><strong>Ocupación:</strong> ${patientData.ocupacion || 'No especificada'}</p>
+            <p><strong>Estado civil:</strong> ${patientData.estado_civil || 'No especificado'}</p>
+        `;
     }
 }
 
-function obtenerIniciales(paciente) {
-    const inicialNombre = paciente.primer_nombre ? paciente.primer_nombre.charAt(0) : '';
-    const inicialApellido = paciente.primer_apellido ? paciente.primer_apellido.charAt(0) : '';
-    return `${inicialNombre}${inicialApellido}` || 'U';
-}
-
-function formatearFecha(fecha) {
-    if (!fecha) return '';
+// Función para calcular la edad desde la fecha de nacimiento
+function calculateAge(birthDate) {
+    if (!birthDate) return 'No especificada';
     
     try {
-        const fechaObj = new Date(fecha);
-        return fechaObj.toLocaleDateString('es-ES');
-    } catch (error) {
-        return fecha;
-    }
-}
-
-function configurarVisibilidadSecciones(autenticado) {
-    // Mostrar/ocultar secciones según autenticación
-    const seccionesNoAutenticadas = document.getElementById('historia-no-autenticado');
-    const seccionesAutenticadas = document.getElementById('historia-ver');
-    
-    if (seccionesNoAutenticadas && seccionesAutenticadas) {
-        if (autenticado) {
-            seccionesNoAutenticadas.style.display = 'none';
-            seccionesAutenticadas.style.display = 'block';
-        } else {
-            seccionesNoAutenticadas.style.display = 'block';
-            seccionesAutenticadas.style.display = 'none';
+        const birth = new Date(birthDate);
+        const today = new Date();
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+        
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
         }
+        
+        return age;
+    } catch (error) {
+        console.error('Error calculando edad:', error);
+        return 'Error';
     }
 }
 
-function mostrarError(mensaje) {
-    // Crear y mostrar mensaje de error
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'alert alert-danger alert-dismissible fade show';
-    errorDiv.innerHTML = `
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        ${mensaje}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
+// Función para formatear fecha
+function formatDate(dateString) {
+    if (!dateString) return 'No especificada';
     
-    // Insertar al inicio del contenido principal
-    const container = document.querySelector('.container');
-    if (container) {
-        container.insertBefore(errorDiv, container.firstChild);
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch (error) {
+        console.error('Error formateando fecha:', error);
+        return 'Fecha inválida';
     }
 }
 
-// Manejar errores no capturados
-window.addEventListener('error', (event) => {
-    console.error('Error global:', event.error);
+// Función para mostrar errores
+function showError(message) {
+    console.error('Error:', message);
+    // Puedes implementar un sistema de notificaciones más elegante
+    alert(message);
+}
+
+// Manejar cierre de sesión
+document.addEventListener('click', function(e) {
+    if (e.target.closest('a[href="login.html"]')) {
+        e.preventDefault();
+        logout();
+    }
 });
+
+// Función para cerrar sesión
+async function logout() {
+    try {
+        const response = await fetch('/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        window.location.href = 'login.html';
+    }
+}

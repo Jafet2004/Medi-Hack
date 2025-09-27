@@ -1,45 +1,42 @@
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validación básica
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                alert('Las contraseñas no coinciden');
-                return;
-            }
-            
-            // Aquí iría la lógica para enviar los datos al servidor
-            // y registrar al usuario en la base de datos
-            
-            // Simulación de registro exitoso
-            alert('Registro exitoso. Ahora puede iniciar sesión.');
-            window.location.href = 'login.html';
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+        primer_nombre: document.getElementById("primer_nombre").value,
+        segundo_nombre: document.getElementById("segundo_nombre").value,
+        primer_apellido: document.getElementById("primer_apellido").value,
+        segundo_apellido: document.getElementById("segundo_apellido").value,
+        cedula: document.getElementById("cedula").value,
+        codigo_paciente: document.getElementById("codigo_paciente").value,
+        email: document.getElementById("email").value,
+        contrasena: document.getElementById("password").value, // 👈 CORREGIDO
+        fecha_nacimiento: document.getElementById("fecha_nacimiento").value,
+        celular: document.getElementById("celular").value,
+        direccion: document.getElementById("direccion").value,
+        genero: document.getElementById("genero").value
+    };
+
+    if (data.contrasena !== document.getElementById("confirmPassword").value) {
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:3000/register/paciente", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
         });
 
-// Previsualización de la imagen seleccionada
-        document.getElementById('foto').addEventListener('change', function(e) {
-            const container = document.querySelector('.profile-picture-container');
-            const placeholder = document.querySelector('.profile-picture-placeholder');
-            
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    // Crear imagen si no existe
-                    let img = container.querySelector('img');
-                    if (!img) {
-                        img = document.createElement('img');
-                        container.appendChild(img);
-                    }
-                    
-                    img.src = e.target.result;
-                    if (placeholder) {
-                        placeholder.style.display = 'none';
-                    }
-                }
-                
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
+        const result = await res.json();
+        if (res.ok) {
+            alert(result.message);
+            window.location.href = "login.html";
+        } else {
+            alert(result.message);
+        }
+    } catch (err) {
+        console.error("Error al registrar:", err);
+        alert("Error de conexión con el servidor");
+    }
+});
