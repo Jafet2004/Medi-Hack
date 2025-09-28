@@ -118,40 +118,40 @@ app.post('/logout', (req, res) => {
 });
 
 // =========================
-// Obtener datos del paciente por ID - RUTA CORREGIDA
+// Obtener datos del paciente por ID
 // =========================
-app.get('/api/paciente/:id', (req, res) => {
+app.get("/api/paciente/:id", (req, res) => {
     const patientId = req.params.id;
-    console.log('Solicitud de datos para paciente ID:', patientId);
+    console.log("Solicitud de datos para paciente ID:", patientId);
 
-    if (!req.session.userId) {
-        console.log('No autorizado - sin sesión');
-        console.log('Patient ID solicitado:', patientId);
-        console.log('Session userId:', req.session.userId);
-        console.log('Session userType:', req.session.userType);
-        return res.status(401).json({ message: 'No autorizado' });
-    }
+
 
     const query = `
-        SELECT u.*, p.* 
-        FROM usuarios u 
-        INNER JOIN pacientes p ON u.id_usuario = p.id_paciente 
-        WHERE u.id_usuario = ?
-    `;
+    SELECT u.id_usuario, u.primer_nombre, u.segundo_nombre, u.primer_apellido, u.segundo_apellido,
+           u.cedula, u.correo, 
+           p.cod_pac as Código, p.fecha_nacimiento, p.celular, p.direccion, p.genero,
+           p.ocupacion, p.estado_civil
+    FROM usuarios u 
+    INNER JOIN pacientes p ON u.id_usuario = p.id_paciente 
+    WHERE u.id_usuario = ?
+`;
+
 
     db.query(query, [patientId], (err, results) => {
         if (err) {
-            console.error('Error obteniendo datos del paciente:', err);
-            return res.status(500).json({ message: 'Error del servidor' });
+            console.error("Error obteniendo datos del paciente:", err);
+            return res.status(500).json({ message: "Error del servidor" });
         }
 
         if (results.length === 0) {
-            return res.status(404).json({ message: 'Paciente no encontrado' });
+            return res.status(404).json({ message: "Paciente no encontrado" });
         }
 
         res.json(results[0]);
     });
 });
+
+
 
 // =========================
 // Registro de Pacientes
@@ -195,9 +195,9 @@ app.post('/register/paciente', (req, res) => {
 // Registro de Trabajadores
 // =========================
 app.post('/register_trab', (req, res) => {
-    const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, correo, contrasena, codigo_minsa } = req.body;
+    const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, cedula, correo, contrasena, codigo_minsa, especialidad } = req.body;
 
-    if (!primer_nombre || !primer_apellido || !cedula || !correo || !contrasena || !codigo_minsa) {
+    if (!primer_nombre || !primer_apellido || !cedula || !correo || !contrasena || !codigo_minsa || !especialidad) {
         return res.status(400).json({ message: 'Todos los campos obligatorios deben ser llenados' });
     }
 
@@ -214,7 +214,7 @@ app.post('/register_trab', (req, res) => {
 
         const idUsuario = result.insertId;
 
-        const queryTrabajador = `INSERT INTO trabajadores_salud (id_trabajador, codigo_minsa) VALUES (?, ?)`;
+        const queryTrabajador = `INSERT INTO trabajadores_salud (id_trabajador, codigo_minsa, especialidad) VALUES (?, ?, ?)`;
         db.query(queryTrabajador, [idUsuario, codigo_minsa], (err2) => {
             if (err2) {
                 console.error('Error insertando trabajador:', err2);
@@ -225,6 +225,200 @@ app.post('/register_trab', (req, res) => {
         });
     });
 });
+
+// Obtener historial completo de un paciente
+app.get("/api/historial-completo/:idPaciente", (req, res) => {
+    const { idPaciente } = req.params;
+
+    const queryHistorial = `
+        SELECT hc.* FROM historial_clinico hc 
+        WHERE hc.id_paciente = ?
+    `;
+
+    db.query(queryHistorial, [idPaciente], (err, resultadosHistorial) => {
+        if (err) {
+            console.error("Error obteniendo historial:", err);
+            return res.status(500).json({ error: "Error en el servidor" });
+        }
+
+        if (resultadosHistorial.length === 0) {
+            return res.json({ tieneHistorial: false });
+        }
+
+        const idHistorial = resultadosHistorial[0].id_historial;
+
+        // Obtener enfermedades crónicas
+        const queryEnfermedades = `SELECT enfermedad FROM historial_enfermedades_cronicas WHERE id_historial = ?`;
+        const queryAlergias = `SELECT alergia FROM historial_alergias WHERE id_historial = ?`;
+        const queryCirugias = `SELECT tipo_cirugia, fecha_cirugia FROM historial_cirugias WHERE id_historial = ?`;
+        const queryHospitalizaciones = `SELECT motivo, fecha FROM historial_hospitalizaciones WHERE id_historial = ?`;
+        const queryMedicamentos = `SELECT nombre_medicamento, dosis, frecuencia FROM historial_medicamentos WHERE id_historial = ?`;
+
+        Promise.all([
+            queryAsync(db, queryEnfermedades, [idHistorial]),
+            queryAsync(db, queryAlergias, [idHistorial]),
+            queryAsync(db, queryCirugias, [idHistorial]),
+            queryAsync(db, queryHospitalizaciones, [idHistorial]),
+            queryAsync(db, queryMedicamentos, [idHistorial])
+        ]).then(([enfermedades, alergias, cirugias, hospitalizaciones, medicamentos]) => {
+            res.json({
+                tieneHistorial: true,
+                historial: {
+                    ...resultadosHistorial[0],
+                    enfermedades_cronicas: enfermedades,
+                    alergias: alergias,
+                    cirugias: cirugias,
+                    hospitalizaciones: hospitalizaciones,
+                    medicamentos: medicamentos
+                }
+            });
+        }).catch(error => {
+            console.error("Error obteniendo datos del historial:", error);
+            res.status(500).json({ error: "Error obteniendo datos del historial" });
+        });
+    });
+});
+
+// Crear historial completo
+app.post("/api/historial-completo", (req, res) => {
+    const {
+        idPaciente,
+        tipo_sangre,
+        antecedentes_familiares,
+        enfermedadesCronicas,
+        alergias,
+        cirugias,
+        hospitalizaciones,
+        medicamentos
+    } = req.body;
+
+    const connection = mysql.createConnection(db.config);
+
+    connection.beginTransaction(err => {
+        if (err) {
+            console.error("Error iniciando transacción:", err);
+            return res.status(500).json({ error: "Error del servidor" });
+        }
+
+        // Insertar historial principal
+        const queryHistorial = `
+            INSERT INTO historial_clinico (id_paciente, tipo_sangre, antecedentes_familiares)
+            VALUES (?, ?, ?)
+        `;
+
+        connection.query(queryHistorial, [idPaciente, tipo_sangre, antecedentes_familiares], (err, result) => {
+            if (err) {
+                return connection.rollback(() => {
+                    console.error("Error insertando historial:", err);
+                    res.status(500).json({ error: "No se pudo crear el historial" });
+                });
+            }
+
+            const idHistorial = result.insertId;
+
+            // Insertar enfermedades crónicas
+            if (enfermedadesCronicas && enfermedadesCronicas.length > 0) {
+                const queryEnfermedades = `INSERT INTO historial_enfermedades_cronicas (id_historial, enfermedad) VALUES ?`;
+                const valoresEnfermedades = enfermedadesCronicas.map(enfermedad => [idHistorial, enfermedad]);
+                
+                connection.query(queryEnfermedades, [valoresEnfermedades], (err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error("Error insertando enfermedades:", err);
+                            res.status(500).json({ error: "Error insertando enfermedades" });
+                        });
+                    }
+                });
+            }
+
+            // Insertar alergias
+            if (alergias && alergias.length > 0) {
+                const queryAlergias = `INSERT INTO historial_alergias (id_historial, alergia) VALUES ?`;
+                const valoresAlergias = alergias.map(alergia => [idHistorial, alergia]);
+                
+                connection.query(queryAlergias, [valoresAlergias], (err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error("Error insertando alergias:", err);
+                            res.status(500).json({ error: "Error insertando alergias" });
+                        });
+                    }
+                });
+            }
+
+            // Insertar cirugías
+            if (cirugias && cirugias.length > 0) {
+                const queryCirugias = `INSERT INTO historial_cirugias (id_historial, tipo_cirugia, fecha_cirugia) VALUES ?`;
+                const valoresCirugias = cirugias.map(cirugia => [idHistorial, cirugia.tipo_cirugia, cirugia.fecha_cirugia]);
+                
+                connection.query(queryCirugias, [valoresCirugias], (err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error("Error insertando cirugías:", err);
+                            res.status(500).json({ error: "Error insertando cirugías" });
+                        });
+                    }
+                });
+            }
+
+            // Insertar hospitalizaciones
+            if (hospitalizaciones && hospitalizaciones.length > 0) {
+                const queryHospitalizaciones = `INSERT INTO historial_hospitalizaciones (id_historial, motivo, fecha) VALUES ?`;
+                const valoresHospitalizaciones = hospitalizaciones.map(hosp => [idHistorial, hosp.motivo, hosp.fecha]);
+                
+                connection.query(queryHospitalizaciones, [valoresHospitalizaciones], (err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error("Error insertando hospitalizaciones:", err);
+                            res.status(500).json({ error: "Error insertando hospitalizaciones" });
+                        });
+                    }
+                });
+            }
+
+            // Insertar medicamentos
+            if (medicamentos && medicamentos.length > 0) {
+                const queryMedicamentos = `INSERT INTO historial_medicamentos (id_historial, nombre_medicamento, dosis, frecuencia) VALUES ?`;
+                const valoresMedicamentos = medicamentos.map(med => [idHistorial, med.nombre_medicamento, med.dosis, med.frecuencia]);
+                
+                connection.query(queryMedicamentos, [valoresMedicamentos], (err) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error("Error insertando medicamentos:", err);
+                            res.status(500).json({ error: "Error insertando medicamentos" });
+                        });
+                    }
+                });
+            }
+
+            // Commit de la transacción
+            connection.commit(err => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error("Error en commit:", err);
+                        res.status(500).json({ error: "Error guardando historial" });
+                    });
+                }
+
+                res.json({ 
+                    message: "Historial clínico creado con éxito", 
+                    idHistorial: idHistorial 
+                });
+            });
+        });
+    });
+});
+
+// Función auxiliar para promises
+function queryAsync(db, sql, values) {
+    return new Promise((resolve, reject) => {
+        db.query(sql, values, (err, results) => {
+            if (err) reject(err);
+            else resolve(results);
+        });
+    });
+}
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

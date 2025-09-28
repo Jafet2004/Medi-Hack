@@ -47,11 +47,10 @@
     <section class="patient-header">
         <div class="container">
             <div class="row align-items-center">
-
                 <div class="col-md-10">
                     <h1 class="display-5 fw-bold">Expediente Clínico</h1>
                     <h2 id="patient-fullname" class="h3">Cargando información...</h2>
-                    <p id="patient-info" class="mb-0">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
+                    <p id="patient-info" class="mb-0">Código: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
                 </div>
             </div>
         </div>
@@ -161,19 +160,7 @@
                             <div class="card-body">
                                 <h4 class="card-title section-title">Historia Clínica</h4>
 
-                                <!-- Estado de autenticación -->
-                                <div id="historia-no-autenticado" style="display: none;">
-                                    <div class="alert alert-info">
-                                        <i class="fas fa-info-circle me-2"></i>Para acceder a tu historia clínica, debes
-                                        iniciar sesión primero.
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                        <a href="login.html" class="btn btn-primary">Iniciar Sesión</a>
-                                        <a href="register.html" class="btn btn-outline-primary">Crear Cuenta</a>
-                                    </div>
-                                </div>
-
-                                <!-- Si está autenticado pero no tiene historial -->
+                                <!-- Si NO tiene historial -->
                                 <div id="historia-crear" style="display: none;">
                                     <div class="alert alert-warning">
                                         <i class="fas fa-exclamation-circle me-2"></i>Aún no tienes un historial clínico
@@ -189,54 +176,71 @@
                                     </div>
                                 </div>
 
-                                <!-- Si está autenticado y ya tiene historial -->
-                                <div id="historia-ver" style="display: none;">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5>Antecedentes Médicos</h5>
-                                        <button class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-print me-1"></i> Imprimir
+                                <!-- Si SÍ tiene historial -->
+                                <div id="historia-contenido" style="display: none;">
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle me-2"></i>Historial clínico registrado.
+                                    </div>
+
+                                    <!-- Tipo de Sangre -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-tint me-2"></i>Tipo de Sangre</h5>
+                                        <p id="historia-tipo-sangre" class="ms-4">No especificado</p>
+                                    </div>
+
+                                    <!-- Enfermedades Crónicas -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-heartbeat me-2"></i>Enfermedades Crónicas</h5>
+                                        <div id="historia-enfermedades" class="ms-4">
+                                            <p>No se han registrado enfermedades crónicas</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Alergias -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-allergies me-2"></i>Alergias</h5>
+                                        <div id="historia-alergias" class="ms-4">
+                                            <p>No se han registrado alergias</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cirugías Previas -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-procedures me-2"></i>Cirugías Previas</h5>
+                                        <div id="historia-cirugias" class="ms-4">
+                                            <p>No se han registrado cirugías previas</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hospitalizaciones -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-hospital me-2"></i>Hospitalizaciones Previas</h5>
+                                        <div id="historia-hospitalizaciones" class="ms-4">
+                                            <p>No se han registrado hospitalizaciones previas</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Antecedentes Familiares -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-users me-2"></i>Antecedentes Familiares</h5>
+                                        <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes familiares</p>
+                                    </div>
+
+                                    <!-- Medicamentos Actuales -->
+                                    <div class="mb-4">
+                                        <h5><i class="fas fa-pills me-2"></i>Medicamentos Actuales</h5>
+                                        <div id="historia-medicamentos" class="ms-4">
+                                            <p>No se han registrado medicamentos actuales</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón Editar 
+                                    <div class="text-center mt-4">
+                                        <button class="btn btn-outline-primary" onclick="editarHistorial()">
+                                            <i class="fas fa-edit me-2"></i>Editar Historial Clínico
                                         </button>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Tipo</th>
-                                                    <th>Descripción</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>15/03/2023</td>
-                                                    <td>Alergia</td>
-                                                    <td>Alergia a la penicilina diagnosticada</td>
-                                                    <td>
-                                                        <div class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-edit"></i>
-                                                        </div>
-                                                        <div class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>20/05/2023</td>
-                                                    <td>Enfermedad</td>
-                                                    <td>Hipertensión arterial diagnosticada</td>
-                                                    <td>
-                                                        <div class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-edit"></i>
-                                                        </div>
-                                                        <div class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    -->
                                 </div>
                             </div>
                         </div>
@@ -456,6 +460,82 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="JavaScript/index_pac.js"></script>
+    <script src="JavaScript/histCL.js"></script>
+
+    <script>
+        // Función para cargar los datos del historial cuando el paciente tiene uno
+        function loadHistorialData(historial) {
+            // Tipo de sangre
+            document.getElementById('historia-tipo-sangre').textContent = 
+                historial.tipo_sangre || 'No especificado';
+            
+            // Enfermedades crónicas
+            const enfermedadesDiv = document.getElementById('historia-enfermedades');
+            if (historial.enfermedades_cronicas && historial.enfermedades_cronicas.length > 0) {
+                enfermedadesDiv.innerHTML = '<ul class="list-unstyled">' + 
+                    historial.enfermedades_cronicas.map(enf => 
+                        `<li><i class="fas fa-circle small me-2"></i>${enf.enfermedad}</li>`
+                    ).join('') + '</ul>';
+            } else {
+                enfermedadesDiv.innerHTML = '<p>No se han registrado enfermedades crónicas</p>';
+            }
+            
+            // Alergias
+            const alergiasDiv = document.getElementById('historia-alergias');
+            if (historial.alergias && historial.alergias.length > 0) {
+                alergiasDiv.innerHTML = '<ul class="list-unstyled">' + 
+                    historial.alergias.map(alergia => 
+                        `<li><i class="fas fa-circle small me-2"></i>${alergia.alergia}</li>`
+                    ).join('') + '</ul>';
+            } else {
+                alergiasDiv.innerHTML = '<p>No se han registrado alergias</p>';
+            }
+            
+            // Cirugías
+            const cirugiasDiv = document.getElementById('historia-cirugias');
+            if (historial.cirugias && historial.cirugias.length > 0) {
+                cirugiasDiv.innerHTML = '<ul class="list-unstyled">' + 
+                    historial.cirugias.map(cirugia => 
+                        `<li><i class="fas fa-circle small me-2"></i>${cirugia.tipo_cirugia} 
+                         ${cirugia.fecha_cirugia ? `- ${new Date(cirugia.fecha_cirugia).toLocaleDateString()}` : ''}</li>`
+                    ).join('') + '</ul>';
+            } else {
+                cirugiasDiv.innerHTML = '<p>No se han registrado cirugías previas</p>';
+            }
+            
+            // Hospitalizaciones
+            const hospitalizacionesDiv = document.getElementById('historia-hospitalizaciones');
+            if (historial.hospitalizaciones && historial.hospitalizaciones.length > 0) {
+                hospitalizacionesDiv.innerHTML = '<ul class="list-unstyled">' + 
+                    historial.hospitalizaciones.map(hosp => 
+                        `<li><i class="fas fa-circle small me-2"></i>${hosp.motivo} 
+                         ${hosp.fecha ? `- ${new Date(hosp.fecha).toLocaleDateString()}` : ''}</li>`
+                    ).join('') + '</ul>';
+            } else {
+                hospitalizacionesDiv.innerHTML = '<p>No se han registrado hospitalizaciones previas</p>';
+            }
+            
+            // Antecedentes familiares
+            document.getElementById('historia-antecedentes').textContent = 
+                historial.antecedentes_familiares || 'No se han registrado antecedentes familiares';
+            
+            // Medicamentos
+            const medicamentosDiv = document.getElementById('historia-medicamentos');
+            if (historial.medicamentos && historial.medicamentos.length > 0) {
+                medicamentosDiv.innerHTML = '<div class="table-responsive"><table class="table table-sm"><thead><tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th></tr></thead><tbody>' + 
+                    historial.medicamentos.map(med => 
+                        `<tr><td>${med.nombre_medicamento}</td><td>${med.dosis || '-'}</td><td>${med.frecuencia || '-'}</td></tr>`
+                    ).join('') + '</tbody></table></div>';
+            } else {
+                medicamentosDiv.innerHTML = '<p>No se han registrado medicamentos actuales</p>';
+            }
+        }
+
+        // Función para editar el historial
+        function editarHistorial() {
+            window.location.href = 'historiaCl.html';
+        }
+    </script>
 </body>
 
 </html>
