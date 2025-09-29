@@ -420,6 +420,37 @@ function queryAsync(db, sql, values) {
 }
 
 
+// Buscar pacientes por nombre, cédula o ID
+app.get('/api/buscar-pacientes', (req, res) => {
+    const q = req.query.q;
+
+    if (!q || q.trim().length < 2) {
+        return res.status(400).json({ message: "Ingrese al menos 2 caracteres para buscar" });
+    }
+
+    const query = `
+        SELECT u.id_usuario, u.primer_nombre, u.segundo_nombre, 
+               u.primer_apellido, u.segundo_apellido, u.cedula
+        FROM usuarios u
+        WHERE u.tipo_usuario = 'paciente'
+          AND (u.primer_nombre LIKE ? OR u.segundo_nombre LIKE ? 
+          OR u.primer_apellido LIKE ? OR u.segundo_apellido LIKE ? 
+          OR u.cedula LIKE ? OR u.id_usuario LIKE ?)
+        LIMIT 20
+    `;
+
+    const likeQuery = `%${q}%`;
+    db.query(query, [likeQuery, likeQuery, likeQuery, likeQuery, likeQuery, likeQuery], (err, results) => {
+        if (err) {
+            console.error("Error en búsqueda de pacientes:", err);
+            return res.status(500).json({ message: "Error del servidor" });
+        }
+        res.json(results);
+    });
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

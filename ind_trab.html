@@ -77,16 +77,13 @@
         <div class="patient-header" id="patientHeader" style="display: none;">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-md-2 text-center">
-                        <img src="https://ui-avatars.com/api/?name=Juan+Perez&size=120&background=random" class="rounded-circle mb-2" alt="Patient Photo" id="patientPhoto">
-                    </div>
                     <div class="col-md-10">
-                        <h2 class="h4 fw-bold" id="patientName">Juan Carlos Pérez González</h2>
-                        <p class="mb-1" id="patientInfo">ID: PAC-2023-0015 | Cédula: 1-2345-6789 | Edad: 42 años</p>
+                        <h2 class="h4 fw-bold" id="patientName">Cargando información...</h2>
+                        <p class="mb-1" id="patientInfo">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
                         <div class="mt-2">
-                            <span class="badge bg-light text-dark me-2" id="patientBloodType">Tipo Sanguíneo: O+</span>
-                            <span class="badge bg-light text-dark me-2" id="patientAllergies">Alergias: Penicilina</span>
-                            <span class="badge bg-light text-dark" id="patientChronic">Condiciones Crónicas: Hipertensión</span>
+                            <span class="badge bg-light text-dark me-2" id="patientBloodType">Tipo Sanguíneo: Cargando...</span>
+                            <span class="badge bg-light text-dark me-2" id="patientAllergies">Alergias: Cargando...</span>
+                            <span class="badge bg-light text-dark" id="patientChronic">Condiciones Crónicas: Cargando...</span>
                         </div>
                     </div>
                 </div>
@@ -157,25 +154,19 @@
                                     <h4 class="card-title section-title">Datos de Identificación</h4>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p><strong>Nombre completo:</strong> Juan Carlos Pérez González</p>
-                                            <p><strong>Cédula:</strong> 1-2345-6789</p>
-                                            <p><strong>Fecha de nacimiento:</strong> 15/03/1981</p>
-                                            <p><strong>Edad:</strong> 42 años</p>
-                                            <p><strong>Género:</strong> Masculino</p>
+                                            <p><strong>Nombre completo:</strong> <span id="patient-fullname-ident">Cargando...</span></p>
+                                            <p><strong>Cédula:</strong> <span id="patient-cedula">Cargando...</span></p>
+                                            <p><strong>Fecha de nacimiento:</strong> <span id="patient-fecha-nacimiento">Cargando...</span></p>
+                                            <p><strong>Edad:</strong> <span id="patient-edad">Cargando...</span></p>
+                                            <p><strong>Género:</strong> <span id="patient-genero">Cargando...</span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><strong>Teléfono:</strong> 8888-8888</p>
-                                            <p><strong>Correo electrónico:</strong> juan.perez@example.com</p>
-                                            <p><strong>Dirección:</strong> San José, Costa Rica</p>
-                                            <p><strong>Ocupación:</strong> Ingeniero</p>
-                                            <p><strong>Estado civil:</strong> Casado</p>
+                                            <p><strong>Teléfono:</strong> <span id="patient-telefono">Cargando...</span></p>
+                                            <p><strong>Correo electrónico:</strong> <span id="patient-email">Cargando...</span></p>
+                                            <p><strong>Dirección:</strong> <span id="patient-direccion">Cargando...</span></p>
+                                            <p><strong>Ocupación:</strong> <span id="patient-ocupacion">Cargando...</span></p>
+                                            <p><strong>Estado civil:</strong> <span id="patient-estado-civil">Cargando...</span></p>
                                         </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <h5 class="section-title">Contacto de Emergencia</h5>
-                                        <p><strong>Nombre:</strong> María González</p>
-                                        <p><strong>Parentesco:</strong> Esposa</p>
-                                        <p><strong>Teléfono:</strong> 8888-9999</p>
                                     </div>
                                 </div>
                             </div>
@@ -186,51 +177,78 @@
                             <div class="card patient-info-card">
                                 <div class="card-body">
                                     <h4 class="card-title section-title">Historia Clínica</h4>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5>Antecedentes Médicos</h5>
-                                        <button class="btn btn-sm btn-primary">
-                                            <i class="fas fa-plus me-1"></i> Agregar
-                                        </button>
+                                    
+                                    <!-- Si NO tiene historial -->
+                                    <div id="historia-crear" style="display: none;">
+                                        <div class="alert alert-warning">
+                                            <i class="fas fa-exclamation-circle me-2"></i>El paciente aún no tiene un historial clínico registrado.
+                                        </div>
+                                        <div class="text-center py-4">
+                                            <i class="fas fa-file-medical fa-4x text-muted mb-3"></i>
+                                            <p class="mb-4">Para comenzar, crea el historial clínico del paciente para llevar un registro completo de su salud.</p>
+                                            <button class="btn btn-primary btn-lg" id="crearHistorialBtn">
+                                                <i class="fas fa-plus me-2"></i> Crear Historial Clínico
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Tipo</th>
-                                                    <th>Descripción</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>15/03/2023</td>
-                                                    <td>Alergia</td>
-                                                    <td>Alergia a la penicilina diagnosticada</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>20/05/2023</td>
-                                                    <td>Enfermedad</td>
-                                                    <td>Hipertensión arterial diagnosticada</td>
-                                                    <td>
-                                                        <button class="btn btn-sm btn-outline-primary">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
+                                    <!-- Si SÍ tiene historial -->
+                                    <div id="historia-contenido" style="display: none;">
+                                        <div class="alert alert-success">
+                                            <i class="fas fa-check-circle me-2"></i>Historial clínico registrado.
+                                        </div>
+
+                                        <!-- Tipo de Sangre -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-tint me-2"></i>Tipo de Sangre</h5>
+                                            <p id="historia-tipo-sangre" class="ms-4">No especificado</p>
+                                        </div>
+
+                                        <!-- Enfermedades Crónicas -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-heartbeat me-2"></i>Enfermedades Crónicas</h5>
+                                            <div id="historia-enfermedades" class="ms-4">
+                                                <p>No se han registrado enfermedades crónicas</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Alergias -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-allergies me-2"></i>Alergias</h5>
+                                            <div id="historia-alergias" class="ms-4">
+                                                <p>No se han registrado alergias</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cirugías Previas -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-procedures me-2"></i>Cirugías Previas</h5>
+                                            <div id="historia-cirugias" class="ms-4">
+                                                <p>No se han registrado cirugías previas</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Hospitalizaciones -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-hospital me-2"></i>Hospitalizaciones Previas</h5>
+                                            <div id="historia-hospitalizaciones" class="ms-4">
+                                                <p>No se han registrado hospitalizaciones previas</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Antecedentes Familiares -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-users me-2"></i>Antecedentes Familiares</h5>
+                                            <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes familiares</p>
+                                        </div>
+
+                                        <!-- Medicamentos Actuales -->
+                                        <div class="mb-4">
+                                            <h5><i class="fas fa-pills me-2"></i>Medicamentos Actuales</h5>
+                                            <div id="historia-medicamentos" class="ms-4">
+                                                <p>No se han registrado medicamentos actuales</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -435,99 +453,8 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="JavaScript/index_pac.js"></script>
+    <script src="JavaScript/index_trab.js"></script>
     <script src="JavaScript/histCL.js"></script>
-    <script>
-        // Datos de ejemplo para la búsqueda
-        const pacientes = [
-            { id: "PAC-2023-0015", nombre: "Juan Carlos Pérez González", cedula: "1-2345-6789", edad: 42, foto: "https://ui-avatars.com/api/?name=Juan+Perez&size=120&background=random", tipoSangre: "O+", alergias: "Penicilina", cronicas: "Hipertensión" },
-            { id: "PAC-2023-0023", nombre: "María Rodríguez Solís", cedula: "2-3456-7890", edad: 35, foto: "https://ui-avatars.com/api/?name=Maria+Rodriguez&size=120&background=random", tipoSangre: "A-", alergias: "Ninguna", cronicas: "Asma" },
-            { id: "PAC-2023-0034", nombre: "Carlos Méndez Vargas", cedula: "3-4567-8901", edad: 58, foto: "https://ui-avatars.com/api/?name=Carlos+Mendez&size=120&background=random", tipoSangre: "B+", alergias: "Mariscos", cronicas: "Diabetes" }
-        ];
-
-        // Elementos DOM
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const searchResults = document.getElementById('searchResults');
-        const patientHeader = document.getElementById('patientHeader');
-        const patientContent = document.getElementById('patientContent');
-        const noPatientMessage = document.getElementById('noPatientMessage');
-        const patientName = document.getElementById('patientName');
-        const patientInfo = document.getElementById('patientInfo');
-        const patientPhoto = document.getElementById('patientPhoto');
-        const patientBloodType = document.getElementById('patientBloodType');
-        const patientAllergies = document.getElementById('patientAllergies');
-        const patientChronic = document.getElementById('patientChronic');
-        const saveButton = document.getElementById('saveButton');
-
-        // Función para buscar pacientes
-        function buscarPacientes(termino) {
-            searchResults.innerHTML = '';
-            
-            if (termino.length < 2) {
-                searchResults.style.display = 'none';
-                return;
-            }
-            
-            const resultados = pacientes.filter(paciente => 
-                paciente.nombre.toLowerCase().includes(termino.toLowerCase()) ||
-                paciente.cedula.includes(termino) ||
-                paciente.id.toLowerCase().includes(termino.toLowerCase())
-            );
-            
-            if (resultados.length > 0) {
-                resultados.forEach(paciente => {
-                    const item = document.createElement('div');
-                    item.className = 'search-item';
-                    item.innerHTML = `
-                        <h6 class="mb-1">${paciente.nombre}</h6>
-                        <small class="text-muted">${paciente.cedula} | ${paciente.id} | ${paciente.edad} años</small>
-                    `;
-                    item.addEventListener('click', () => seleccionarPaciente(paciente));
-                    searchResults.appendChild(item);
-                });
-                searchResults.style.display = 'block';
-            } else {
-                searchResults.innerHTML = '<div class="search-item text-muted">No se encontraron pacientes</div>';
-                searchResults.style.display = 'block';
-            }
-        }
-
-        // Función para seleccionar un paciente
-        function seleccionarPaciente(paciente) {
-            patientName.textContent = paciente.nombre;
-            patientInfo.textContent = `ID: ${paciente.id} | Cédula: ${paciente.cedula} | Edad: ${paciente.edad} años`;
-            patientPhoto.src = paciente.foto;
-            patientBloodType.textContent = `Tipo Sanguíneo: ${paciente.tipoSangre}`;
-            patientAllergies.textContent = `Alergias: ${paciente.alergias}`;
-            patientChronic.textContent = `Condiciones Crónicas: ${paciente.cronicas}`;
-            
-            patientHeader.style.display = 'block';
-            patientContent.style.display = 'block';
-            noPatientMessage.style.display = 'none';
-            searchResults.style.display = 'none';
-            searchInput.value = '';
-        }
-
-        // Event Listeners
-        searchInput.addEventListener('input', () => {
-            buscarPacientes(searchInput.value);
-        });
-
-        searchButton.addEventListener('click', () => {
-            buscarPacientes(searchInput.value);
-        });
-
-        saveButton.addEventListener('click', () => {
-            alert('Cambios guardados correctamente');
-        });
-
-        // Cerrar resultados de búsqueda al hacer clic fuera
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.style.display = 'none';
-            }
-        });
-    </script>
+    
 </body>
 </html>
