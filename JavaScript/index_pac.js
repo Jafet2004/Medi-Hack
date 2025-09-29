@@ -69,3 +69,80 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+//---------------------------------------------
+
+// Función para cargar y mostrar las citas del paciente
+function cargarCitasPaciente() {
+    const listaCitas = document.getElementById('lista-citas');
+    const sinCitas = document.getElementById('sin-citas');
+    
+    // Obtener citas del localStorage
+    const citas = JSON.parse(localStorage.getItem('citasPacientes')) || [];
+    
+    // Filtrar citas del paciente actual (puedes ajustar esta lógica según tu implementación)
+    const pacienteActual = "NIREGA DEL CARMEN BALMACEDA LÓPEZ"; // Esto debería venir de la sesión
+    const citasPaciente = citas.filter(cita => cita.paciente === pacienteActual);
+    
+    // Limpiar lista actual
+    listaCitas.innerHTML = '';
+    
+    if (citasPaciente.length === 0) {
+        sinCitas.style.display = 'block';
+        return;
+    }
+    
+    sinCitas.style.display = 'none';
+    
+    // Mostrar cada cita
+    citasPaciente.forEach(cita => {
+        const citaCard = document.createElement('div');
+        citaCard.className = `card cita-card mb-3 ${cita.estado.toLowerCase()}`;
+        
+        // Determinar clase de estado para el badge
+        let estadoClase = 'bg-secondary';
+        if (cita.estado === 'Aprobada') estadoClase = 'bg-success';
+        if (cita.estado === 'Pendiente') estadoClase = 'bg-warning';
+        if (cita.estado === 'Cancelada') estadoClase = 'bg-danger';
+        
+        citaCard.innerHTML = `
+            <div class="card-body">
+                <div class="cita-info">
+                    <div class="cita-details">
+                        <h6 class="card-title">${cita.especialidad}</h6>
+                        <p class="mb-1"><strong>Doctor:</strong> ${cita.medico}</p>
+                        <p class="mb-1"><strong>Consultorio:</strong> ${cita.consultorio || 'Por asignar'}</p>
+                        <p class="mb-1"><strong>Fecha y hora:</strong> ${formatearFecha(cita.fecha)} ${cita.hora}</p>
+                        ${cita.motivo ? `<p class="mb-0"><strong>Motivo:</strong> ${cita.motivo}</p>` : ''}
+                    </div>
+                    <div class="cita-status">
+                        <span class="badge estado-badge ${estadoClase}">${cita.estado}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        listaCitas.appendChild(citaCard);
+    });
+}
+
+// Función para formatear la fecha
+function formatearFecha(fechaString) {
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(fechaString).toLocaleDateString('es-ES', opciones);
+}
+
+// Cargar citas cuando la pestaña esté activa
+document.addEventListener('DOMContentLoaded', function() {
+    // Escuchar cambios en las pestañas
+    const citaTab = document.getElementById('cita-tab');
+    if (citaTab) {
+        citaTab.addEventListener('click', function() {
+            setTimeout(cargarCitasPaciente, 100);
+        });
+    }
+    
+    // Cargar citas si ya estamos en la pestaña de citas
+    if (window.location.hash === '#cita' || document.getElementById('cita').classList.contains('active')) {
+        cargarCitasPaciente();
+    }
+});

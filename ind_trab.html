@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,40 +9,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="CSS/perfil_trab.css">
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">MEDI-HACK</a>
-            <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="ind_trab.html"><i class="fas fa-home me-1"></i> Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-calendar-alt me-1"></i> Agenda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-tasks me-1"></i> Tareas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bell me-1"></i> Notificaciones</a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <div class="d-flex align-items-center">
-                            <div class="user-avatar me-2">MP</div>
-                            <a href="login.html" class="btn btn-outline-light">
-                                <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">MEDI-HACK</a>
+                <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="ind_trab.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-calendar-alt me-1"></i> Agenda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-tasks me-1"></i> Tareas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-bell me-1"></i> Notificaciones</a>
+                        </li>
+
+                        <!-- 🔽 Dropdown Usuario -->
+                        <li class="nav-item dropdown ms-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar me-2" id="userAvatar">UM</div>
+                                <span id="userName">Médico</span>
                             </a>
-                        </div>
-                    </li>
-                </ul>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <div class="dropdown-header">
+                                        <h6 id="dropdownUserName" class="mb-0">Cargando...</h6>
+                                        <small id="dropdownUserSpecialty" class="text-muted">Cargando
+                                            especialidad...</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <!-- 🔹 Mi Perfil con nombre y especialidad -->
+                                <li>
+                                    <a class="dropdown-item d-flex flex-column align-items-start" href="perfil.html">
+                                        <div><i class="fas fa-user me-2"></i> Mi Perfil</div>
+                                        <small id="userProfileName" class="fw-bold text-dark">Cargando nombre...</small>
+                                        <small id="userProfileSpecialty" class="text-muted">Cargando
+                                            especialidad...</small>
+                                    </a>
+                                </li>
+
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a>
+                                </li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="login.html">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <!-- Main Content -->
     <div class="container my-4">
@@ -51,7 +88,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="Ingrese nombre, cédula o ID del paciente" id="searchInput">
+                        <input type="text" class="form-control form-control-lg"
+                            placeholder="Ingrese nombre, cédula o ID del paciente" id="searchInput">
                         <button class="btn btn-primary" type="button" id="searchButton">
                             <i class="fas fa-search me-1"></i> Buscar
                         </button>
@@ -81,9 +119,12 @@
                         <h2 class="h4 fw-bold" id="patientName">Cargando información...</h2>
                         <p class="mb-1" id="patientInfo">ID: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
                         <div class="mt-2">
-                            <span class="badge bg-light text-dark me-2" id="patientBloodType">Tipo Sanguíneo: Cargando...</span>
-                            <span class="badge bg-light text-dark me-2" id="patientAllergies">Alergias: Cargando...</span>
-                            <span class="badge bg-light text-dark" id="patientChronic">Condiciones Crónicas: Cargando...</span>
+                            <span class="badge bg-light text-dark me-2" id="patientBloodType">Tipo Sanguíneo:
+                                Cargando...</span>
+                            <span class="badge bg-light text-dark me-2" id="patientAllergies">Alergias:
+                                Cargando...</span>
+                            <span class="badge bg-light text-dark" id="patientChronic">Condiciones Crónicas:
+                                Cargando...</span>
                         </div>
                     </div>
                 </div>
@@ -98,25 +139,29 @@
                     <div class="quick-access sticky-top" style="top: 20px;">
                         <h5 class="section-title">Módulos del Paciente</h5>
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
-                            <a class="nav-link active" id="identificacion-tab" data-bs-toggle="pill" href="#identificacion" role="tab">
+                            <a class="nav-link active" id="identificacion-tab" data-bs-toggle="pill"
+                                href="#identificacion" role="tab">
                                 <i class="fas fa-id-card me-2"></i> Datos de Identificación
                             </a>
                             <a class="nav-link" id="historia-tab" data-bs-toggle="pill" href="#historia" role="tab">
                                 <i class="fas fa-file-medical me-2"></i> Historia Clínica
                             </a>
-                            <a class="nav-link" id="diagnostico-tab" data-bs-toggle="pill" href="#diagnostico" role="tab">
+                            <a class="nav-link" id="diagnostico-tab" data-bs-toggle="pill" href="#diagnostico"
+                                role="tab">
                                 <i class="fas fa-stethoscope me-2"></i> Diagnóstico
                             </a>
                             <a class="nav-link" id="estudios-tab" data-bs-toggle="pill" href="#estudios" role="tab">
                                 <i class="fas fa-vial me-2"></i> Estudios y Laboratorios
                             </a>
-                            <a class="nav-link" id="tratamientos-tab" data-bs-toggle="pill" href="#tratamientos" role="tab">
+                            <a class="nav-link" id="tratamientos-tab" data-bs-toggle="pill" href="#tratamientos"
+                                role="tab">
                                 <i class="fas fa-pills me-2"></i> Tratamientos
                             </a>
                             <a class="nav-link" id="evolucion-tab" data-bs-toggle="pill" href="#evolucion" role="tab">
                                 <i class="fas fa-clipboard-list me-2"></i> Notas de Evolución
                             </a>
-                            <a class="nav-link" id="pronosticos-tab" data-bs-toggle="pill" href="#pronosticos" role="tab">
+                            <a class="nav-link" id="pronosticos-tab" data-bs-toggle="pill" href="#pronosticos"
+                                role="tab">
                                 <i class="fas fa-procedures me-2"></i> Pronósticos
                             </a>
                             <a class="nav-link" id="seguridad-tab" data-bs-toggle="pill" href="#seguridad" role="tab">
@@ -131,10 +176,12 @@
                             <a class="nav-link" id="consulta-tab" data-bs-toggle="pill" href="#consulta" role="tab">
                                 <i class="fas fa-user-md me-2"></i> Consulta
                             </a>
-                            <a class="nav-link" id="observacion-tab" data-bs-toggle="pill" href="#observacion" role="tab">
+                            <a class="nav-link" id="observacion-tab" data-bs-toggle="pill" href="#observacion"
+                                role="tab">
                                 <i class="fas fa-clipboard me-2"></i> Observación
                             </a>
-                            <a class="nav-link" id="emergencias-tab" data-bs-toggle="pill" href="#emergencias" role="tab">
+                            <a class="nav-link" id="emergencias-tab" data-bs-toggle="pill" href="#emergencias"
+                                role="tab">
                                 <i class="fas fa-ambulance me-2"></i> Emergencias
                             </a>
                             <a class="nav-link" id="interna-tab" data-bs-toggle="pill" href="#interna" role="tab">
@@ -154,18 +201,25 @@
                                     <h4 class="card-title section-title">Datos de Identificación</h4>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p><strong>Nombre completo:</strong> <span id="patient-fullname-ident">Cargando...</span></p>
+                                            <p><strong>Nombre completo:</strong> <span
+                                                    id="patient-fullname-ident">Cargando...</span></p>
                                             <p><strong>Cédula:</strong> <span id="patient-cedula">Cargando...</span></p>
-                                            <p><strong>Fecha de nacimiento:</strong> <span id="patient-fecha-nacimiento">Cargando...</span></p>
+                                            <p><strong>Fecha de nacimiento:</strong> <span
+                                                    id="patient-fecha-nacimiento">Cargando...</span></p>
                                             <p><strong>Edad:</strong> <span id="patient-edad">Cargando...</span></p>
                                             <p><strong>Género:</strong> <span id="patient-genero">Cargando...</span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><strong>Teléfono:</strong> <span id="patient-telefono">Cargando...</span></p>
-                                            <p><strong>Correo electrónico:</strong> <span id="patient-email">Cargando...</span></p>
-                                            <p><strong>Dirección:</strong> <span id="patient-direccion">Cargando...</span></p>
-                                            <p><strong>Ocupación:</strong> <span id="patient-ocupacion">Cargando...</span></p>
-                                            <p><strong>Estado civil:</strong> <span id="patient-estado-civil">Cargando...</span></p>
+                                            <p><strong>Teléfono:</strong> <span id="patient-telefono">Cargando...</span>
+                                            </p>
+                                            <p><strong>Correo electrónico:</strong> <span
+                                                    id="patient-email">Cargando...</span></p>
+                                            <p><strong>Dirección:</strong> <span
+                                                    id="patient-direccion">Cargando...</span></p>
+                                            <p><strong>Ocupación:</strong> <span
+                                                    id="patient-ocupacion">Cargando...</span></p>
+                                            <p><strong>Estado civil:</strong> <span
+                                                    id="patient-estado-civil">Cargando...</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -177,15 +231,17 @@
                             <div class="card patient-info-card">
                                 <div class="card-body">
                                     <h4 class="card-title section-title">Historia Clínica</h4>
-                                    
+
                                     <!-- Si NO tiene historial -->
                                     <div id="historia-crear" style="display: none;">
                                         <div class="alert alert-warning">
-                                            <i class="fas fa-exclamation-circle me-2"></i>El paciente aún no tiene un historial clínico registrado.
+                                            <i class="fas fa-exclamation-circle me-2"></i>El paciente aún no tiene un
+                                            historial clínico registrado.
                                         </div>
                                         <div class="text-center py-4">
                                             <i class="fas fa-file-medical fa-4x text-muted mb-3"></i>
-                                            <p class="mb-4">Para comenzar, crea el historial clínico del paciente para llevar un registro completo de su salud.</p>
+                                            <p class="mb-4">Para comenzar, crea el historial clínico del paciente para
+                                                llevar un registro completo de su salud.</p>
                                             <button class="btn btn-primary btn-lg" id="crearHistorialBtn">
                                                 <i class="fas fa-plus me-2"></i> Crear Historial Clínico
                                             </button>
@@ -239,7 +295,8 @@
                                         <!-- Antecedentes Familiares -->
                                         <div class="mb-4">
                                             <h5><i class="fas fa-users me-2"></i>Antecedentes Familiares</h5>
-                                            <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes familiares</p>
+                                            <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes
+                                                familiares</p>
                                         </div>
 
                                         <!-- Medicamentos Actuales -->
@@ -286,6 +343,35 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <!-- Cita Electrónica -->
+                    <div class="tab-pane fade" id="cita" role="tabpanel">
+                        <div class="card patient-info-card">
+                            <div class="card-body">
+                                <h4 class="card-title section-title">Cita Electrónica</h4>
+
+                                <!-- Sección de Citas electrónicas -->
+                                <div id="citas-existente" class="mb-4">
+                                    <h5 class="mb-3">Mis Citas Programadas</h5>
+                                    <div id="lista-citas" class="citas-container">
+                                        <!-- Las citas se cargarán dinámicamente aquí -->
+                                    </div>
+                                    <div id="sin-citas" class="alert alert-info" style="display: none;">
+                                        <i class="fas fa-info-circle me-2"></i>No tienes citas programadas actualmente.
+                                    </div>
+                                </div>
+
+                                <!-- Botón para Agendar Nueva Cita -->
+                                <div class="text-center py-3">
+                                    <a href="cita_pac.html" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-calendar-plus me-2"></i> Agendar Nueva Cita
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                         <!-- Notas de Evolución -->
                         <div class="tab-pane fade" id="evolucion" role="tabpanel">
@@ -404,7 +490,8 @@
         <div class="text-center py-5" id="noPatientMessage">
             <i class="fas fa-search fa-3x text-muted mb-3"></i>
             <h4 class="text-muted">Busque un paciente para ver su información</h4>
-            <p class="text-muted">Utilice la barra de búsqueda superior para encontrar un paciente por nombre, cédula o ID</p>
+            <p class="text-muted">Utilice la barra de búsqueda superior para encontrar un paciente por nombre, cédula o
+                ID</p>
         </div>
     </div>
 
@@ -414,7 +501,8 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <h5 class="mb-4">MEDI-HACK</h5>
-                    <p>Plataforma de gestión médica diseñada para facilitar el acceso a servicios de salud y mejorar la experiencia del paciente.</p>
+                    <p>Plataforma de gestión médica diseñada para facilitar el acceso a servicios de salud y mejorar la
+                        experiencia del paciente.</p>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
                     <h5 class="mb-4">Enlaces</h5>
@@ -455,6 +543,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="JavaScript/index_trab.js"></script>
     <script src="JavaScript/histCL.js"></script>
-    
+    <script src="JavaScript/cita_pac.js"></script>
+    <script>
+
+    </script>
 </body>
+
 </html>

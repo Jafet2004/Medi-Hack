@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDI-HACK - Fila Virtual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="CSS/fila.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <div class="logo-section text-center py-4">
+                    <h2 class="text-white">MEDI-HACK</h2>
+                    <p class="text-light">Sistema de Gestión Médica</p>
+                </div>
+                
+                <div class="patient-info p-3">
+                    <h5 class="section-title text-light">Información del Paciente</h5>
+                    <div class="patient-details">
+                        <p><strong>Nombre:</strong> <span id="patient-name">Jafet Alexander Aguilar Martinez</span></p>
+                        <p><strong>Expediente Único:</strong> <span id="patient-exp"></span></p>
+                        <p><strong>Identificación:</strong> <span id="patient-id">Cargando...</span></p>
+                        <p><strong>Edad:</strong> <span id="patient-age">Cargando...</span></p>
+                        <p><strong>Sexo:</strong> <span id="patient-gender">Cargando...</span></p>
+                        <p><strong>Celular:</strong> <span id="patient-phone">Cargando...</span></p>
+                    </div>
+                </div>
+                
+                <div class="menu-options">
+                    <h5 class="section-title text-light">Navegación</h5>
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link" href="index.html">
+                            <i class="fas fa-home me-2"></i> Inicio
+                        </a>
+                        <a class="nav-link" href="cita_pac.html">
+                            <i class="fas fa-calendar-plus me-2"></i> Agendar Cita
+                        </a>
+                        <a class="nav-link active" href="fila_virt.html">
+                            <i class="fas fa-list-ol me-2"></i> Fila Virtual
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 main-content">
+                <div class="header-bar p-3">
+                    <h4 class="mb-0">Fila Virtual</h4>
+                    <p class="mb-0 text-muted">Consulta tu posición en la fila para ser atendido</p>
+                </div>
+
+                <div class="content-area p-4">
+                    <!-- Filtros -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Filtrar por Fecha</h5>
+                                    <input type="date" class="form-control" id="fecha-filtro">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Filtrar por Especialidad</h5>
+                                    <select class="form-select" id="especialidad-filtro">
+                                        <option value="">Todas las especialidades</option>
+                                        <option>GINECO OBSTETRICIA</option>
+                                        <option>CIRUGIA GENERAL</option>
+                                        <option>MEDICINA INTERNA</option>
+                                        <option>ORTOPEDIA Y TRAUMOLOGIA</option>
+                                        <option>PEDIATRÍA</option>
+                                        <option>RADIOLOGIA</option>
+                                        <option>OFTALMOLOGIA</option>
+                                        <option>OTORRINOLARINGOLOGÍA</option>
+                                        <option>UROLOGÍA</option>
+                                        <option>DERMATOLOGÍA</option>
+                                        <option>PSIQUIATRÍA</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de la Fila -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-users me-2"></i>
+                                        Mi Posición en la Fila
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="sin-citas" class="alert alert-info text-center">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        No tienes citas aprobadas para hoy
+                                    </div>
+
+                                    <div id="lista-fila" class="fila-container">
+                                        <!-- Las citas en fila se cargarán aquí -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Todas las Citas Aprobadas -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-calendar-check me-2"></i>
+                                        Todas mis Citas Aprobadas
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="tabla-citas-aprobadas">
+                                            <thead>
+                                                <tr>
+                                                    <th># Orden</th>
+                                                    <th>Fecha</th>
+                                                    <th>Hora</th>
+                                                    <th>Especialidad</th>
+                                                    <th>Consultorio</th>
+                                                    <th>Médico</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="JavaScript/fila.js"></script>
+</body>
+</html>

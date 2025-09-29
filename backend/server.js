@@ -430,13 +430,14 @@ app.get('/api/buscar-pacientes', (req, res) => {
 
     const query = `
         SELECT u.id_usuario, u.primer_nombre, u.segundo_nombre, 
-               u.primer_apellido, u.segundo_apellido, u.cedula
+               u.primer_apellido, u.segundo_apellido, u.cedula, p.cod_pac as Código
         FROM usuarios u
+        INNER JOIN pacientes p ON u.id_usuario = p.id_paciente
         WHERE u.tipo_usuario = 'paciente'
           AND (u.primer_nombre LIKE ? OR u.segundo_nombre LIKE ? 
           OR u.primer_apellido LIKE ? OR u.segundo_apellido LIKE ? 
           OR u.cedula LIKE ? OR u.id_usuario LIKE ?)
-        LIMIT 20
+        
     `;
 
     const likeQuery = `%${q}%`;
@@ -449,6 +450,41 @@ app.get('/api/buscar-pacientes', (req, res) => {
     });
 });
 
+// Obtener información del trabajador por ID
+app.get("/api/trabajador/:id", (req, res) => {
+    const trabajadorId = req.params.id;
+    console.log("Solicitud de datos para trabajador ID:", trabajadorId);
+
+    const query = `
+        SELECT 
+            u.id_usuario, 
+            u.primer_nombre, 
+            u.segundo_nombre, 
+            u.primer_apellido, 
+            u.segundo_apellido,
+            u.cedula, 
+            u.correo, 
+            t.codigo_minsa, 
+            t.especialidad
+        FROM usuarios u 
+        INNER JOIN trabajadores_salud t 
+            ON u.id_usuario = t.id_usuario   -- 🔹 CORREGIDO: debe empatar con id_usuario
+        WHERE u.id_usuario = ?
+    `;
+
+    db.query(query, [trabajadorId], (err, results) => {
+        if (err) {
+            console.error("Error obteniendo datos del trabajador:", err);
+            return res.status(500).json({ message: "Error del servidor" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Trabajador no encontrado" });
+        }
+
+        res.json(results[0]);
+    });
+});
 
 
 app.listen(PORT, () => {

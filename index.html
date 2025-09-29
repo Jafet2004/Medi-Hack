@@ -50,7 +50,8 @@
                 <div class="col-md-10">
                     <h1 class="display-5 fw-bold">Expediente Clínico</h1>
                     <h2 id="patient-fullname" class="h3">Cargando información...</h2>
-                    <p id="patient-info" class="mb-0">Código: Cargando... | Cédula: Cargando... | Edad: Calculando...</p>
+                    <p id="patient-info" class="mb-0">Código: Cargando... | Cédula: Cargando... | Edad: Calculando...
+                    </p>
                 </div>
             </div>
         </div>
@@ -223,7 +224,8 @@
                                     <!-- Antecedentes Familiares -->
                                     <div class="mb-4">
                                         <h5><i class="fas fa-users me-2"></i>Antecedentes Familiares</h5>
-                                        <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes familiares</p>
+                                        <p id="historia-antecedentes" class="ms-4">No se han registrado antecedentes
+                                            familiares</p>
                                     </div>
 
                                     <!-- Medicamentos Actuales -->
@@ -288,7 +290,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="card mb-3">
-                                            <div class="card-header bg-primary text-white">
+                                            <div class="card-header text-white">
                                                 <i class="fas fa-vial me-2"></i> Análisis de Sangre
                                             </div>
                                             <div class="card-body">
@@ -354,7 +356,41 @@
                         </div>
                     </div>
 
-                    <!-- Resto de las pestañas... -->
+                    <!-- Cita Electrónica -->
+                    <div class="tab-pane fade" id="cita" role="tabpanel">
+                        <div class="card patient-info-card">
+                            <div class="card-body">
+                                <h4 class="card-title section-title">Cita Electrónica</h4>
+
+                                <!-- Sección de Citas electrónicas -->
+                                <div id="citas-existente" class="mb-4">
+                                    <h5 class="mb-3">Mis Citas Programadas</h5>
+                                    <div id="lista-citas" class="citas-container">
+                                        <!-- Las citas se cargarán dinámicamente aquí -->
+                                    </div>
+                                    <div id="sin-citas" class="alert alert-info" style="display: none;">
+                                        <i class="fas fa-info-circle me-2"></i>No tienes citas programadas actualmente.
+                                    </div>
+                                </div>
+
+                                <!-- Botón para Agendar Nueva Cita -->
+                                <div class="text-center py-3">
+                                    <a href="cita_pac.html" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-calendar-plus me-2"></i> Agendar Nueva Cita
+                                    </a>
+                                </div>
+
+                                <!-- Botón para Ver Fila virtual -->
+                                <div class="text-center py-3">
+                                    <a href="fila_virt.html" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-calendar-plus me-2"></i> Ver Fila Virtual
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resto de las pestañas en proceso -->
                 </div>
             </div>
         </div>
@@ -462,80 +498,6 @@
     <script src="JavaScript/index_pac.js"></script>
     <script src="JavaScript/histCL.js"></script>
 
-    <script>
-        // Función para cargar los datos del historial cuando el paciente tiene uno
-        function loadHistorialData(historial) {
-            // Tipo de sangre
-            document.getElementById('historia-tipo-sangre').textContent = 
-                historial.tipo_sangre || 'No especificado';
-            
-            // Enfermedades crónicas
-            const enfermedadesDiv = document.getElementById('historia-enfermedades');
-            if (historial.enfermedades_cronicas && historial.enfermedades_cronicas.length > 0) {
-                enfermedadesDiv.innerHTML = '<ul class="list-unstyled">' + 
-                    historial.enfermedades_cronicas.map(enf => 
-                        `<li><i class="fas fa-circle small me-2"></i>${enf.enfermedad}</li>`
-                    ).join('') + '</ul>';
-            } else {
-                enfermedadesDiv.innerHTML = '<p>No se han registrado enfermedades crónicas</p>';
-            }
-            
-            // Alergias
-            const alergiasDiv = document.getElementById('historia-alergias');
-            if (historial.alergias && historial.alergias.length > 0) {
-                alergiasDiv.innerHTML = '<ul class="list-unstyled">' + 
-                    historial.alergias.map(alergia => 
-                        `<li><i class="fas fa-circle small me-2"></i>${alergia.alergia}</li>`
-                    ).join('') + '</ul>';
-            } else {
-                alergiasDiv.innerHTML = '<p>No se han registrado alergias</p>';
-            }
-            
-            // Cirugías
-            const cirugiasDiv = document.getElementById('historia-cirugias');
-            if (historial.cirugias && historial.cirugias.length > 0) {
-                cirugiasDiv.innerHTML = '<ul class="list-unstyled">' + 
-                    historial.cirugias.map(cirugia => 
-                        `<li><i class="fas fa-circle small me-2"></i>${cirugia.tipo_cirugia} 
-                         ${cirugia.fecha_cirugia ? `- ${new Date(cirugia.fecha_cirugia).toLocaleDateString()}` : ''}</li>`
-                    ).join('') + '</ul>';
-            } else {
-                cirugiasDiv.innerHTML = '<p>No se han registrado cirugías previas</p>';
-            }
-            
-            // Hospitalizaciones
-            const hospitalizacionesDiv = document.getElementById('historia-hospitalizaciones');
-            if (historial.hospitalizaciones && historial.hospitalizaciones.length > 0) {
-                hospitalizacionesDiv.innerHTML = '<ul class="list-unstyled">' + 
-                    historial.hospitalizaciones.map(hosp => 
-                        `<li><i class="fas fa-circle small me-2"></i>${hosp.motivo} 
-                         ${hosp.fecha ? `- ${new Date(hosp.fecha).toLocaleDateString()}` : ''}</li>`
-                    ).join('') + '</ul>';
-            } else {
-                hospitalizacionesDiv.innerHTML = '<p>No se han registrado hospitalizaciones previas</p>';
-            }
-            
-            // Antecedentes familiares
-            document.getElementById('historia-antecedentes').textContent = 
-                historial.antecedentes_familiares || 'No se han registrado antecedentes familiares';
-            
-            // Medicamentos
-            const medicamentosDiv = document.getElementById('historia-medicamentos');
-            if (historial.medicamentos && historial.medicamentos.length > 0) {
-                medicamentosDiv.innerHTML = '<div class="table-responsive"><table class="table table-sm"><thead><tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th></tr></thead><tbody>' + 
-                    historial.medicamentos.map(med => 
-                        `<tr><td>${med.nombre_medicamento}</td><td>${med.dosis || '-'}</td><td>${med.frecuencia || '-'}</td></tr>`
-                    ).join('') + '</tbody></table></div>';
-            } else {
-                medicamentosDiv.innerHTML = '<p>No se han registrado medicamentos actuales</p>';
-            }
-        }
-
-        // Función para editar el historial
-        function editarHistorial() {
-            window.location.href = 'historiaCl.html';
-        }
-    </script>
 </body>
 
 </html>

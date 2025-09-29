@@ -1,0 +1,191 @@
+/* Estilos generales */
+body {
+    background-color: var(--light-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #1a414c;
+    --secondary-color: #5ea998;
+    --accent-color: #E44D3A;
+    --light-color: #fefaef;
+}
+
+.sidebar {
+    background: linear-gradient(135deg, var(--primary-color), #2c5a6b);
+    min-height: 100vh;
+    color: white;
+}
+
+.logo-section h2 {
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.section-title {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.patient-details p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.nav-pills .nav-link {
+    color: #ecf0f1;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link:hover {
+    background-color: rgba(94, 169, 152, 0.3);
+    color: white;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    background-color: var(--light-color);
+}
+
+.header-bar {
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.content-area {
+    min-height: calc(100vh - 80px);
+}
+
+/* Estilos para la fila virtual */
+.fila-container {
+    display: grid;
+    gap: 1rem;
+}
+
+.cita-en-fila {
+    background: linear-gradient(135deg, #ffffff, var(--light-color));
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.cita-en-fila:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.cita-en-fila.actual {
+    border-color: var(--secondary-color);
+    background: linear-gradient(135deg, #e8f4f1, #d4eae4);
+}
+
+.cita-en-fila.proxima {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, #fdedea, #fadbd6);
+}
+
+.numero-orden {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: var(--primary-color);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.cita-en-fila.actual .numero-orden {
+    background: var(--secondary-color);
+}
+
+.cita-en-fila.proxima .numero-orden {
+    background: var(--accent-color);
+}
+
+.cita-info {
+    margin-left: 60px;
+}
+
+.estado-fila {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+.estado-actual {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.estado-proxima {
+    background: var(--accent-color);
+    color: white;
+}
+
+.estado-en-espera {
+    background: #6c757d;
+    color: white;
+}
+
+.tiempo-estimado {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+/* Tabla de citas aprobadas */
+.table th {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(94, 169, 152, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+    
+    .cita-info {
+        margin-left: 0;
+        margin-top: 50px;
+    }
+    
+    .numero-orden {
+        top: 10px;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}

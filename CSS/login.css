@@ -17,15 +17,19 @@ body {
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #5ea998;
+    border-color: #1a414c;
     border-radius: 50px;
     padding: 12px;
 }
 
 .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
+    background-color: #1a414c ;
+    border-color: #1a414c ;
+}
+
+.a, h2, h3 {
+    color: #1a414c ;
 }
 
 .form-control {
@@ -34,5 +38,5 @@ body {
 }
 
 .form-control:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(23, 112, 50, 0.25);
 }

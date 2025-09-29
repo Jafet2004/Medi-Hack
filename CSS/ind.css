@@ -1,7 +1,7 @@
 :root {
-            --primary-color: #2c6bac;
-            --secondary-color: #4ca1af;
-            --accent-color: #38b6ff;
+            --primary-color: #1a414c;
+            --secondary-color: #5ea998;
+            --accent-color: #E44D3A;
         }
 
         body {
@@ -27,7 +27,7 @@
         }
 
         .nav-link:hover {
-            color: white !important;
+            color: var(--primary-color) !important;
             transform: translateY(-2px);
         }
 
@@ -96,6 +96,12 @@
             font-weight: 600;
         }
 
+        .card-header{
+            background: linear-gradient(135deg, var(--primary-color) 100%);
+            color: white;
+            font-weight: 600;
+        }
+
         .footer {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
@@ -125,3 +131,50 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+
+    /* Estilos para la sección de citas */
+.cita-card {
+    border-left: 4px solid var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.cita-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cita-card.aprobada {
+    border-left-color: var(--primary-color);
+}
+
+.cita-card.pendiente {
+    border-left-color: var(--secondary-color);
+}
+
+.cita-card.cancelada {
+    border-left-color: var(--accent-color);
+}
+
+.cita-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.cita-details {
+    flex-grow: 1;
+}
+
+.cita-status {
+    text-align: right;
+}
+
+.estado-badge {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.65rem;
+}
+
+.citas-container {
+    max-height: 400px;
+    overflow-y: auto;
+}

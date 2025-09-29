@@ -1,9 +1,8 @@
 :root {
-            --primary-color: #2c6bac;
-            --secondary-color: #4ca1af;
-            --accent-color: #38b6ff;
-            --dark-color: #1a4b7a;
-            --light-color: #f8f9fa;
+            --primary-color: #1a414c;
+            --secondary-color: #5ea998;
+            --accent-color: #E44D3A;
+            --light-color: #fefaef;
         }
 
         body {
@@ -29,7 +28,7 @@
         }
 
         .nav-link:hover {
-            color: white !important;
+            color: var(--primary-color) !important;
             transform: translateY(-2px);
         }
 
@@ -129,7 +128,7 @@
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border: none;
+            border: var(--secondary-color);
             border-radius: 50px;
             padding: 10px 25px;
             font-weight: 600;
@@ -201,3 +200,47 @@
         .tab-content {
             padding-bottom: 80px; /* Espacio para los botones de acción */
         }
+
+
+
+/* Estilos para el dropdown del usuario */
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--light-color) 0%, var(--accent-color) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.dropdown-header {
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.navbar-dark .navbar-nav .nav-link.dropdown-toggle {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-dark .navbar-nav .nav-link.dropdown-toggle:hover {
+    color: white;
+}
